@@ -5,12 +5,11 @@ comment:{
     type:String,
     required:true
 },
-author: {
+author:{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'users',
-  },
-  
-card: {
+  },  
+ card:{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'cards',
   },
@@ -20,8 +19,7 @@ card: {
   date:{
     type:Date,
     default:Date.now()
-  },
-  
+  },  
 });
 const comments=mongoose.model("comments",commentsSchema);
 comments.createIndexes();

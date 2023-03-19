@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import {BiHomeCircle} from 'react-icons/bi'
-import {MdTravelExplore,MdExplore} from 'react-icons/md'
+import {MdTravelExplore,MdExplore,MdOutlineMessage,MdMessage} from 'react-icons/md'
 import {BsPerson,BsBookmarks,BsFillPersonFill,BsBookmarksFill} from 'react-icons/bs'
 import {FiMessageSquare} from 'react-icons/fi'
 import {FaHands} from 'react-icons/fa'
@@ -14,10 +14,31 @@ import { Link, useParams ,useLocation} from 'react-router-dom';
 function LeftNavBar() {
     
     let location=useLocation();
-    useEffect(() => {
-     console.log("location is",location.pathname);
-    }, [])
-    
+    var rand=0
+    const params=useParams()
+    const {profileId} =useParams();
+   
+    const host="http://localhost:5000"
+    const [user,setUser]=useState(null)
+
+      useEffect(()=>{
+      
+        const getUserProfile=async ()=>{
+            const response=await fetch(`${host}/api/auth/getuser`,{
+                method: 'GET',
+                headers: {
+                  'auth-token': localStorage.getItem('token'),
+                  'Content-Type':'application/json'
+                },
+              });
+        
+              const json=await response.json();
+             //  console.log("side",json);
+             setUser(json[0])    
+            }
+                getUserProfile();
+
+      },[])
     const func=(str)=>{
         let res="/"
         for(let i=1;i<str.length;i++)
@@ -35,14 +56,14 @@ function LeftNavBar() {
                     <div className='ProfileImgDiv'>
                         <svg viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" >
                             <defs>
-                                <pattern id="img" patternUnits="userSpaceOnUse" width="100" height="100">
-                                    <image href="https://cpb-us-w2.wpmucdn.com/portfolio.newschool.edu/dist/2/485/files/2014/08/DSC_1004-2-1a1yqd6.jpg" width="150" height="100" />
+                                <pattern style={{"boxShadow":"10px 10px 10px 10px #7498bf"}}id="img" patternUnits="userSpaceOnUse" width="100" height="100">
+                                   {user&& <image href={user.profileImg} width="150" height="100" />}
                                 </pattern>
                             </defs>
                                 <polygon id="profilePic" className='hoverEffects' points="50 1 95 25 95 75 50 99 5 75 5 25" fill="url(#img)" />
                         </svg>
                     </div>
-                    Harsha
+                    {user&&user.name}
                 </div>
         <ul className='LeftNavBarUl TextBig'>
             <Link to="/">
@@ -51,7 +72,10 @@ function LeftNavBar() {
             <Link to="/explore/foru">
             <li className={`LeftNavBarLi ${func(location.pathname)==="/explore"?"LeftNavActive":""}`}>{func(location.pathname)!=="/explore"&&<MdOutlineExplore/>} {func(location.pathname)==="/explore"&&<MdExplore/>} Explore</li>
             </Link>
-            <li className='LeftNavBarLi'><FiMessageSquare/> Messages</li>
+            <Link to="/message/list">
+            <li className={`LeftNavBarLi ${func(location.pathname)==="/message"?"LeftNavActive":""}`}>{func(location.pathname)!=="/message"&&<MdOutlineMessage/>} {func(location.pathname)==="/message"&&<MdMessage/>} Messages</li>
+            </Link>
+            {/* <li className='LeftNavBarLi'><FiMessageSquare/> Messages</li> */}
             <Link to="/bookmarks">
              <li className={`LeftNavBarLi ${location.pathname==="/bookmarks"?"LeftNavActive":""}`}>{location.pathname!=="/bookmarks"&&<BsBookmarks/>} {location.pathname==="/bookmarks"&&<BsBookmarksFill/>} Bookmarks</li>
             </Link>

@@ -20,7 +20,7 @@ function NavBar(props) {
             <div className={`${props.toRender==="Trending"?"UlListActive":""} ProfileJsTabsLi`}>
             <Link to={`/explore/trending`} style={{"textDecoration":"none"}}>
             <li >
-                Trending
+                Most Viewed
             </li>
             </Link>
             </div>

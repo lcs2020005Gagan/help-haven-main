@@ -1,15 +1,18 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
-function TopTrendingCard() {
+function TopTrendingCard(props) {
+  
   return (
     <div className='TopTrendingCard'>
-        
-        <div className="TopTrendingCardName">
-            #BetiBachaoBetiPadhao
+        <Link to={`/story/${props.element._id}`} style={{"color":"white"}}>
+        <div className="TopTrendingCardName textClip-1">
+            {props.element.title}
         </div>
         <div className="TopTrendingCardDonations">
-            789 donations
+            {props.element.priority} donations
         </div>
+        </Link>
     </div>
   )
 }

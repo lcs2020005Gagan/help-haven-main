@@ -103,7 +103,6 @@ export default function BasicModal(props) {
         else {
             console.log("invalid cred")
         }
-
     }  
 
 

@@ -2,6 +2,7 @@ const express=require("express")
 const bodyParser = require("body-parser");
 const User=require("../models/Users")
 const Card=require("../models/Cards")
+const Comment=require("../models/Comments")
 let fetchuser=require("../middleware/fetchuser")
 const router=express.Router()
 const app =express()
@@ -63,6 +64,42 @@ var jwt=require("jsonwebtoken");
          })
          .catch(error=>console.log(error));
        })
+
+    router.get('/gettopcards',async (req,res)=>{
+        const cards= Card.find()
+         .sort({priority:-1}).limit(3)
+         .exec()
+         .then(p=>{
+             res.status(200).json(p)
+         })
+         .catch(error=>console.log(error));
+       })
+
+       router.get('/getcardwithid/:id', async (req, res) => {
+        try {
+            let card =await Card.find({_id:req.params.id})
+            if(!card)
+            {
+                res.status(498).send("Card not found");
+            }
+            const cards= Card.findById(req.params.id)
+            .populate("author")
+            .populate({ 
+              path: 'commentsSection',
+              populate: {
+                path: 'author',
+              } 
+           })
+            .exec()
+            .then(p=>{
+                res.status(200).json(p)
+            })
+            .catch(error=>console.log(error));
+        } catch (error) {
+            console.error(error.message);
+            res.status(500).send("Internal Server Error");
+        }
+    })
 
     //get user specific cards
     router.get('/getusercards',async (req,res)=>{
@@ -189,6 +226,56 @@ router.post('/bookmark', fetchuser, [
         }
     })
     
+       //addcomment
+  router.post('/addcomment/:cardId', fetchuser, [
+    body('comment', 'Enter a valid comment').isLength({ min: 1}),
+   ], async (req, res) => {
+        try {
+            const { comment } = req.body;
 
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+            
+            const card = new Comment({
+                comment,author: req.id,
+                card:req.params.cardId
+                })
+            const savedCard = await card.save()
+            await User.findOneAndUpdate({
+                _id:req.id
+              },{
+                $push:{
+                  postedComments:card
+                }
+              })
+              await Card.findOneAndUpdate({
+                _id:req.params.cardId
+              },{
+                $push:{
+                  commentsSection:card
+                }
+              })
+            
+            res.send({success:"success",card:savedCard});
+            console.log(req);
+
+        } catch (error) {
+            console.error(error.message);
+            res.status(500).send("Internal Server Error");
+        }
+    })
+
+        //getallcomments
+        router.get('/getallcomments',async (req,res)=>{
+          const comments= Comment.find()
+           .populate("author")
+           .exec()
+           .then(p=>{
+               res.status(200).json(p)
+           })
+           .catch(error=>console.log(error));
+         })
 
 module.exports=router

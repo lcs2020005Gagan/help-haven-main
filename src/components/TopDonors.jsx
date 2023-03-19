@@ -27,8 +27,8 @@ function TopDonors() {
             Top Donors
         </div>
         {user&&user.map((element) => {
-    return <div key={rand++} style={{"padding":"0","margin":"0","width":"100%"}}>
-       <TopDonorsCard element={element}/>
+    return <div key={rand} style={{"padding":"0","margin":"0","width":"100%"}}>
+       <TopDonorsCard element={element} />
     </div>
 })}
         

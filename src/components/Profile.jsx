@@ -89,10 +89,10 @@ function Profile(toRender) {
             <div style={{"display":"flex","gap":"0.8rem"}}>
 
                  <p style={{"color":"white","fontSize":"0.8rem"}}>
-                115 followers  
+                {user.followers.length} followers  
                 </p>
                  <p style={{"color":"white","fontSize":"0.8rem"}}>
-                12 following  
+                {user.following.length} following  
                 </p>
                 </div>
 
@@ -142,7 +142,7 @@ function Profile(toRender) {
         </div>
 
         </div>
-        <RightNavBar/>
+        <RightNavBar location="profile" followers={user.followers} following={user.following}/>
     </div>}
     </>
   )

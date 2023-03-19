@@ -19,6 +19,9 @@ import {
 import Story from './components/Story';
 import BookMarks from './components/BookMarks';
 import Explore from './components/Explore';
+import Tag from './components/Tag';
+import Chat from './components/Chat';
+import Friend from './components/Friend';
 function App() {
     return (
         <BrowserRouter>
@@ -34,6 +37,8 @@ function App() {
             <div className="CenterHomePageContainer">
                 <Routes>
                 <Route exact path="/" element=<HomePage /> />
+                <Route exact path="/friend" element=<Friend /> />
+                <Route exact path="/tag/:tagId" element=<Tag /> />
                 <Route exact path="/explore/foru" element=<Explore toRender="ForYou" /> />
                 <Route exact path="/explore/trending" element=<Explore toRender="Trending" /> />
                 <Route exact path="/bookmarks" element=<BookMarks /> />

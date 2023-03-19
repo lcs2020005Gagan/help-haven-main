@@ -3,7 +3,8 @@ import HomePageCard from './HomePageCard'
 import NavBar from './NavBar'
 import NoContent from './NoContent'
 import RightNavBar from './RightNavBar'
-
+import { Button } from 'react-bootstrap';
+import * as XLSX from 'xlsx';
 function HomePage() {
   var rand=0
   const host="http://localhost:5000"
@@ -19,11 +20,34 @@ function HomePage() {
       func();
       console.log(articles);
   }, [])
+
+  const handleExport = () => {
+    // create a workbook object
+    const wb = XLSX.utils.book_new();
+
+    // create a worksheet with some data
+    const ws = XLSX.utils.json_to_sheet([
+      {'age':35,'workclass':"Self-emp-inc",'education_level':"Bachelors",'education-num':13.0,'marital-status':"Married-civ-spouse",
+      'occupation':'Exec-managerial','relationship':"Husband",'race':"White",'sex':'Male','capital-gain':0.0,'capital-loss':0.0,
+      'hours-per-week':60.0,'native-country':"United-States",'greater_than_50k':0
+ }
+    ]);
+
+    // add the worksheet to the workbook
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    // save the workbook as an Excel file
+    XLSX.writeFile(wb, 'data.xlsx');
+  };
+
   return (
 
        <div className="HomePage">
         <div className="RightAndLeft">
-
+        <div className="hmmmmmm">
+        <h1>Export Data to Excel</h1>
+      <Button onClick={handleExport}>Export</Button>
+        </div>
         <NavBar title={"Home"}/>
         {articles&&articles.map((element) => {
     return <div key={rand++} style={{"padding":"0","margin":"0","width":"100%"}}>

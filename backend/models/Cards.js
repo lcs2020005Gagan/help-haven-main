@@ -50,7 +50,9 @@ commentsSection:[{
   views:{
     type:Number,
   },
-
+  donations:{
+    type:Number,
+  },
 });
 const cards=mongoose.model("cards",cardsSchema);
 cards.createIndexes();

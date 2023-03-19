@@ -67,6 +67,10 @@ following:[{
     ref: 'cards',
     default:[""]
   }],
+  wantToChat:{
+    type:"String",
+    default:"yes"
+  }
 });
 const users=mongoose.model("users",usersSchema);
 users.createIndexes();

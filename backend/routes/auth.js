@@ -114,6 +114,8 @@ router.get('/getuser',fetchuser,
   async (req, res) => {
     await User.find({_id:req.id})
   .select("-password")
+  .populate("followers")
+  .populate("following")
   .exec()
   .then(p=>{
       res.status(200).json(p)
@@ -141,8 +143,14 @@ router.get('/gettopdonors',
         {
             res.status(498).send("User not found");
         }
-       user=await User.findById(req.params.id);
-        res.json(user);
+       user=await User.findById(req.params.id)
+       .populate("followers")
+       .populate("following")
+       .exec()
+       .then(p=>{
+           res.status(200).json(p)
+       })
+       .catch(error=>console.log(error))
     } catch (error) {
         console.error(error.message);
         res.status(500).send("Internal Server Error");

@@ -5,20 +5,23 @@ import ExploreCard from './ExploreCard'
 import NoContent from './NoContent'
 import NavBar from './NavBar'
 import RightNavBar from './RightNavBar'
+import { useParams } from 'react-router-dom'
+import HomePageCard from './HomePageCard'
 
-function Explore(props) {
+function Tag(props) {
     const host="http://localhost:5000"
     var rand=0
     var randd=0
+    const params=useParams()
+    const {tagId} =useParams();
     const [articles, setArticles] = useState(null)
     const [tags,setTags]=useState({})
     const [tagArticles,settagArticles]=useState([])
     const [loading, setLoading]=useState(true)    
     const [flag, setFlag]=useState(true)    
-    const [tagsInfo,setTagsInfo]=useState({})
+    const [resArr,setResArr]=useState([])
     useEffect(() => {
         const pushTags=async()=>{
-            console.log("flag ",flag)
             // if(flag===0)
             // setTags({})
             if(articles)
@@ -36,11 +39,15 @@ function Explore(props) {
                    }
                 }
             }
-        settagArticles([])
+        settagArticles([])        
         for(const key of Object.keys(tags))
         settagArticles( tagArticles => [...tagArticles, `${key}`]);
-        console.log("tags",tags)
+        // console.log(tags)
+        // console.log(tags[tagId])
+        setResArr([tags[tagId]])
+        console.log("res array",resArr)
         setLoading(false);
+
         setFlag(0)
     }
     const func=async()=>{
@@ -57,11 +64,11 @@ function Explore(props) {
     <>
     {loading?<NoContent/>:<div className='ProfileJs'>
         <div className="rightAndLeft">
-            <NavBar title="Explore"  toRender={props.toRender}/>
-            {tagArticles&&tagArticles.map((element) => {
-  return <div className="d-flex justify-content-center " key={randd} style={{"width":"100%","padding":"0","margin":"0"}}>
-     <ExploreCard tag={element} tags={tags} rank={++randd} toRender={props.toRender}/>
-  </div>
+            <NavBar title={`#${tagId}`}  />
+            {tags&&tags[tagId]&&tags[tagId].map((element) => {
+    return <div key={rand++} style={{"padding":"0","margin":"0","width":"100%"}}>
+       <HomePageCard {...element}/>
+    </div>
 })}
   
         </div>
@@ -71,4 +78,4 @@ function Explore(props) {
   )
 }
 
-export default Explore
+export default Tag

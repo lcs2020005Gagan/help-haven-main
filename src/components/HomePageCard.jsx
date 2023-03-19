@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {MdOutlineMail} from 'react-icons/md';
 import {BiUpvote} from 'react-icons/bi'
 import {BsBookmarkPlus} from 'react-icons/bs'
@@ -8,6 +8,10 @@ import { Link, useNavigate } from 'react-router-dom';
 
 
 function HomePageCard(props) {
+  useEffect(() => {
+  console.log("inside homepage", props)
+  }, [])
+  
     const navigate=useNavigate()
     const handleClick=()=>{
         navigate(`/story/${props._id}`)
@@ -94,7 +98,7 @@ function HomePageCard(props) {
     
     <div className='bottom-container'>
                 <div className="percentage">
-                    80%
+                    0%
                 </div>
                 <div className="icons">
                     <FiMessageSquare/>

@@ -2,6 +2,7 @@ import logo from "../assets/logo.png";
 import down from "../assets/down-icon.png";
 import landingimg from "../assets/landing-background.jpg";
 import LandingCards from "./LandingCards";
+import Login from "./Login";
 import React from "react";
 import Interactive from "./Interactive";
 import Doughnut from "./Doughnut";
@@ -9,10 +10,12 @@ import Area from "./Area";
 import { Zoom, Slide, JackInTheBox, Bounce, Fade } from "react-awesome-reveal";
 import {BsInstagram,BsFillTelephoneFill,BsTwitter} from 'react-icons/bs'
 import {AiOutlineMail,AiOutlineCopyrightCircle} from 'react-icons/ai'
+import { useNavigate } from "react-router-dom";
 
 
 
 const Home = () => {
+  const navigate=useNavigate()
   return (
     <>
       <div>
@@ -27,8 +30,10 @@ const Home = () => {
               Let's make kindness a daily thought !
             </p>
             <div className="landing-btns">
-              <button>Go to home page</button>
-              <button>Join Now</button>
+             
+
+              <button> <a href="/" style={{"color":"white"}}>Go to home page</a></button>
+              <Login/>
             </div>
           </div>
           <div className="landing-img">
