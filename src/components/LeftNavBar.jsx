@@ -72,7 +72,7 @@ function LeftNavBar() {
             <Link to="/explore/foru">
             <li className={`LeftNavBarLi ${func(location.pathname)==="/explore"?"LeftNavActive":""}`}>{func(location.pathname)!=="/explore"&&<MdOutlineExplore/>} {func(location.pathname)==="/explore"&&<MdExplore/>} Explore</li>
             </Link>
-            <Link to="/message/list">
+            <Link to="/message">
             <li className={`LeftNavBarLi ${func(location.pathname)==="/message"?"LeftNavActive":""}`}>{func(location.pathname)!=="/message"&&<MdOutlineMessage/>} {func(location.pathname)==="/message"&&<MdMessage/>} Messages</li>
             </Link>
             {/* <li className='LeftNavBarLi'><FiMessageSquare/> Messages</li> */}
