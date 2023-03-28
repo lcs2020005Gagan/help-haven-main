@@ -101,6 +101,28 @@ var jwt=require("jsonwebtoken");
         }
     })
 
+    //update card
+    router.post('/updatecardviews', [
+      body('views'),body('id')
+     ], async (req, res) => {
+          try {
+              const views = req.body.views;
+              const id=req.body.id
+             await Card.findOneAndUpdate({
+                _id:id
+              },{
+                $set:{
+                  views:views,
+                }
+              })
+             const card=await Card.find({_id:id});
+              res.json({"card":card,"success":true});
+          } catch (error) {
+              console.error(error.message);
+              res.status(500).send("Internal Server Error");
+          }
+      })
+
     //get user specific cards
     router.get('/getusercards',async (req,res)=>{
         const cards= Card.find()
@@ -257,8 +279,15 @@ router.post('/bookmark', fetchuser, [
                   commentsSection:card
                 }
               })
-            
-            res.send({success:"success",card:savedCard});
+              const idd=savedCard._id
+              const comments= Comment.find({_id:idd})
+              .populate("author")
+              .exec()
+              .then(p=>{
+                  res.status(200).json({success:"success",card:p})
+              })
+              .catch(error=>console.log(error));
+              // res.send({success:"success",card:savedCard});
             console.log(req);
 
         } catch (error) {

@@ -3,6 +3,7 @@ import ButtonComp from './ButtonComp'
 import { useParams } from 'react-router-dom'
 import CommentCard from './CommentCard'
 import Comments from './Comments'
+import Chip from './Chip'
 
 function Story() {
     var rand=0
@@ -12,7 +13,6 @@ function Story() {
     const host="http://localhost:5000"
     const [card,setCard]=useState(null)
     useEffect(() => {
-      
         const func=async()=>
           { 
         const response=await fetch(`${host}/api/upload/getcardwithid/${params.storyId}`,{
@@ -20,9 +20,22 @@ function Story() {
             });
           const json=await response.json();
           setCard(json)
+          const views=json.views+1
+          const id=storyId
+          
+    const response2=await fetch(`${host}/api/upload/updatecardviews`,{
+            method: 'POST',
+            headers: {
+                'auth-token': localStorage.getItem('token'),
+                'Content-Type':'application/json'
+              },
+              body: JSON.stringify({views,id}),
+          });
+          const json2 = await response2.json();
+          console.log(json2);
         }
-            func();
-            // console.log("storyyyy",card)
+        func();
+
       },[])
     return (
         <>
@@ -47,7 +60,7 @@ function Story() {
                 {card.author.name}
             </div>
                     <br />
-                    {card.date}
+                    {new Date(card.date).toUTCString().substring(0,16)}
 
                 </div>
                 <div className="donate-btn">
@@ -62,8 +75,13 @@ function Story() {
             <div className="full-details">
               {card.description}
             </div>
+            <div className="ChipContainer">
+          {  card.tags.map((element) => {
+    return        <Chip  key={rand++} chip={element}/>
+    })}
 
-            <Comments comments={card.commentsSection}/>
+            </div>
+            <Comments comments={card.commentsSection} author={card.author}/>
         </div>}
         </>
     )

@@ -1,5 +1,5 @@
 *{
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Nunito', sans-serif !important;
 
 
 }
@@ -280,6 +280,9 @@ font-size: 1.2rem;
   font-weight: bold;
   
  }
+ .DarkGreen{
+  color: rgb(177, 249, 177);
+ }
 
  .bottom-container{
   width: 100%;
@@ -307,6 +310,8 @@ font-size: 1.2rem;
   color : white;
   margin: 1rem;
   border-radius: 1rem;
+  overflow: hidden;
+  max-width: 100%;
   /* border: 1px solid grey; */
 
 }
@@ -320,6 +325,7 @@ font-size: 1.2rem;
     /* opacity: 0.6; */
     z-index: 0;
     justify-content: space-between;
+
 }
 
 .icons svg:hover{
@@ -1575,89 +1581,121 @@ font-size: 2.1rem;
 .MessageBox>button:hover{
   opacity: 0.7;
 }
-.conversation .left-banner .item:last-child {
-  margin-bottom: 0;
-  /* display: none; */
-}
-.top-banner{
-  /* display: none !important; */
-}
-.zego-im-container{
-  width: 100% !important;
-}
-.conversation {
+
+
+.FAlert{
+  background-color: rgb(70, 1, 1);
   display: flex;
-  width: 350px;
-  height: 720px;
-  background-color: black;
-  border-radius: 0 0 0 8px;
-  color: white;
-}
-.chat {
-  display: flex;
-  flex-direction: column;
-  width: 680px;
-  height: 720px;
-  background-color: black !important;
-  border-radius: 0 0 8px 0;
-  color: white;
-}
-.conversation .left-banner {
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 16px 8px;
-  width: 70px;
-  height: 100%;
-  background-color: black !important;
-  border-radius: 0 0 0 8px;
-  color: white;
-}
-.conversation .left-banner .item {
+  gap: 0.5rem;
+  width:100%;
+  border:2px solid black;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 24px;
-  padding: 8px 0 6px;
-  width: 54px;
-  background-color: black !important;
-  border-radius: 4px;
-  cursor: pointer;
+  top:1rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;;
+  z-index: 100;
+  padding:1rem;
+ animation: flash 2s cubic-bezier(0.895, 0.03, 0.685, 0.22) infinite;
+ align-items: center;
+}
+.FAlertIcon{
+  font-size: 3rem;
+  color:gold;
+}
+.FAlertContent{
+
   color: white;
 }
-.conversation .default-content {
+.FAlertHeading{
+  font-size: 1.5rem;
+}
+.FAlertMessage{
+  font-size: 0.9rem;
+}
+.AlertIconCross{
+  color:white;
+  cursor: pointer;
+  margin-left: auto;
+  margin-bottom: auto;
+  font-size: 1.2rem;
+}
+.ChipJs{
+  padding: 0.3rem 0.8rem;
+  border:1px solid white;
+  color: rgb(96, 92, 92);
+  border-radius: 0.9rem;
+  font-size: 0.8rem;
+  display: inline-block;
+  /* background-color: grey; */
+  color: white;
+}
+.ChipJs:hover{
+    background-color: grey;
+
+}
+.ChipJs2{
+  font-size: 0.6rem;
+  padding: 0.1rem 0.4rem;
+}
+.ChipContainer,.ChipContainerHomePageCard{
   display: flex;
+  gap:0.7rem;
+  margin-top: 1rem;
+}
+.ChipContainerHomePageCard{
+  gap: 0.4rem;
+  margin: 0;
+  font-size: 0.3rem !important;
+  padding: 0rem 0.5rem 0.5rem 0.5rem;
+}
+@keyframes flash {
+ 0%{
+  border-top:2px solid red;
+
+ }
+  
+  25% {
+    border-right:2px solid rgb(254, 85, 133);
+  }
+  50% {
+    border-bottom:2px solid rgb(254, 85, 85);
+
+  }
+  75%{
+    border-left:2px solid rgb(254, 85, 85);
+  }
+  100% {
+   
+    border-top:2px solid red;
+  }
+}
+.Heading{
+  color: white;
+  font-size: 1.3rem;
+  font-weight: bolder;
+  text-align: center;
+}
+.FormFields{
+
+  display: flex;
+  /* grid-template-columns: 1fr 1fr; */
+  gap: 1rem;
+  width: 100%;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  font-size: 16px;
-  font-weight: 400;
-  color: grey !important;
-  background-color: black !important;
 }
-.conversation .conversation-content {
-  padding: 8px 8px 0 8px;
-  width: 280px;
-  overflow-y: auto;
-  background-color: black !important;
+.FlexColumn{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.conversation .conversation-content .conversation-item.actived {
-  background: linear-gradient(270deg, #020336 0%, grey 100%) !important;
-}
-.chat .send-box .text-area {
-  box-sizing: border-box;
-  padding: 0 16px;
-  width: 100%;
-  height: 50px;
-  background-color: #111111 !important;
-  font-size: 14px;
-  font-weight: 400;
-  color: white !important;
-  border: none;
-  resize: none;
-  outline: none;
-  word-break: break-all;
+.whole-card-views{
+  background-color: rgba(0, 203, 169, 0.871);
+  position: absolute;
+  top: -1;
+  right: 0;
+  display: inline-block;
+  padding: 0.05rem 0.5rem;
+  
+  font-size: 0.7rem;
 }

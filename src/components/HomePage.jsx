@@ -5,9 +5,11 @@ import NoContent from './NoContent'
 import RightNavBar from './RightNavBar'
 import { Button } from 'react-bootstrap';
 import * as XLSX from 'xlsx';
+import SuccessAlert from './SuccessAlert'
 function HomePage() {
   var rand=0
   const host="http://localhost:5000"
+  const [user,setUser]=useState([])
   const [articles,setArticles]=useState([])
   useEffect(() => {
     const func=async()=>{
@@ -17,9 +19,22 @@ function HomePage() {
         const json=await response.json();
         setArticles(json);         
       }
+      const getUserProfile=async ()=>{
+        const response=await fetch(`${host}/api/auth/getuser2`,{
+            method: 'GET',
+            headers: {
+              'auth-token': localStorage.getItem('token'),
+              'Content-Type':'application/json'
+            },
+          });
+    
+          const json=await response.json();
+         setUser(json[0])
+        }
+        getUserProfile();
       func();
-      console.log(articles);
   }, [])
+
 
   const handleExport = () => {
     // create a workbook object
@@ -44,14 +59,10 @@ function HomePage() {
 
        <div className="HomePage">
         <div className="RightAndLeft">
-        <div className="hmmmmmm">
-        <h1>Export Data to Excel</h1>
-      <Button onClick={handleExport}>Export</Button>
-        </div>
         <NavBar title={"Home"}/>
-        {articles&&articles.map((element) => {
+        {articles&&user&&articles.map((element) => {
     return <div key={rand++} style={{"padding":"0","margin":"0","width":"100%"}}>
-       <HomePageCard {...element}/>
+       <HomePageCard element={element} bookmarks={user.bookmarkedCards} upvotes={user.likedCards}/>
     </div>
 })}
 {articles&&articles.length===0&&<NoContent NoContentTitle="No Posts to view" NoContentMessage="Please check back later"/>}

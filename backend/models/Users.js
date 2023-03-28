@@ -70,6 +70,19 @@ following:[{
   wantToChat:{
     type:"String",
     default:"yes"
+  },
+  hateComments:[{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'comments',
+    default:[""]
+  }],
+  defaultValuesAdded:{
+    type:Boolean,
+    default:false
+  },
+  greaterThan50K:{
+    type:Boolean,
+    default:false
   }
 });
 const users=mongoose.model("users",usersSchema);

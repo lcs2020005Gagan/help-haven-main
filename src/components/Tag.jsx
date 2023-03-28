@@ -67,7 +67,7 @@ function Tag(props) {
             <NavBar title={`#${tagId}`}  />
             {tags&&tags[tagId]&&tags[tagId].map((element) => {
     return <div key={rand++} style={{"padding":"0","margin":"0","width":"100%"}}>
-       <HomePageCard {...element}/>
+       <HomePageCard element={element}/>
     </div>
 })}
   

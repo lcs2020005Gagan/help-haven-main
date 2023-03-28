@@ -123,6 +123,19 @@ router.get('/getuser',fetchuser,
   .catch(error=>console.log(error));
   });
 
+
+  //getuser2
+router.get('/getuser2',fetchuser,
+async (req, res) => {
+  await User.find({_id:req.id})
+.select("-password")
+.exec()
+.then(p=>{
+    res.status(200).json(p)
+})
+.catch(error=>console.log(error));
+});
+
 //get all user
 router.get('/gettopdonors',
   async (req, res) => {
@@ -235,6 +248,27 @@ router.post('/updateuserbookmarkedCards', fetchuser, [
       }
   })
 
+  //update user
+router.post('/updateuser', fetchuser, [
+  body('greaterThan50K'),
+ ], async (req, res) => {
+      try {
+          const ans = req.body.greaterThan50K;
+         await User.findOneAndUpdate({
+            _id:req.id
+          },{
+            $set:{
+              greaterThan50K:ans,
+              defaultValuesAdded:true
+            }
+          })
+         const user=await User.find({_id:req.id});
+          res.json({"user":user,"success":true});
+      } catch (error) {
+          console.error(error.message);
+          res.status(500).send("Internal Server Error");
+      }
+  })
 
 
   //getuser

@@ -9,7 +9,10 @@ import {AiOutlineHome,AiTwotoneHome} from 'react-icons/ai'
 import {MdOutlineExplore} from 'react-icons/md'
 import ButtonComp from './ButtonComp'
 import PopUp from './PopUp'
+import PopUpDetails from './PopUpDetails'
+
 import { Link, useParams ,useLocation} from 'react-router-dom';
+import PopUpPostRequest from './PopUpPostRequest'
 
 function LeftNavBar() {
     
@@ -33,7 +36,8 @@ function LeftNavBar() {
               });
         
               const json=await response.json();
-             //  console.log("side",json);
+           
+              console.log("side",json);
              setUser(json[0])    
             }
                 getUserProfile();
@@ -46,8 +50,12 @@ function LeftNavBar() {
         res+=str[i]}
     }
 
+    
+
   return (
     <div className='LeftNavBar'>
+      {user&&user.defaultValuesAdded===false&&<PopUpDetails
+       defaultState="true"/>}
         <div className="HelpHavenLogo">
             {/* <BsTwitter/> */}
             <FaHands/>

@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom'
 function TopDonorsCard(props) {
 
 
-
   return (
     <>
     {props&&<div className={`TopDonorsCard ${(props.rank%2)===1?"AlternatingBg":""}`} >

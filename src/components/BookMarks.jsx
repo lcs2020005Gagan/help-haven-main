@@ -30,7 +30,7 @@ function BookMarks() {
             }
          
                 getUserProfile();
-                console.log(user)  
+                // console.log(user)  
 
       },[])
 

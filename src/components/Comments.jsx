@@ -13,8 +13,30 @@ import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { useParams } from 'react-router-dom';
+import FailureAlert from './FailureAlert';
+import axios from 'axios';
 
 function Comments(props) {
+     
+  const host="http://localhost:5000"
+  const [user,setUser]=useState(null)
+  useEffect(()=>{
+      
+    const getUserProfile=async ()=>{
+        const response=await fetch(`${host}/api/auth/getuser`,{
+            method: 'GET',
+            headers: {
+              'auth-token': localStorage.getItem('token'),
+              'Content-Type':'application/json'
+            },
+          });
+    
+          const json=await response.json();
+         setUser(json[0])    
+        }
+            getUserProfile();
+
+  },[])
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -26,18 +48,19 @@ function Comments(props) {
    var rand=0
    const {storyId}  = useParams();
 
-
+    const [negativeSentiment,setNegativeSentiment]=useState(false)
    const [note, setnote] = useState({ comment:""});
    const handlechange = (e) => {
        setnote({ ...note, [e.target.name]: e.target.value })
-       console.log(note);
+      //  console.log(note);
    }
 
+   const [commentsUseState,setCommentsUseState]=useState(props.comments)
    const handlesubmit = async (e) => {
        // console.log("hello")
+       setNegativeSentiment(false)
        e.preventDefault();
        const comment = note.comment
-
        const authtoken=localStorage.getItem('token');
        const response = await fetch(`http://localhost:5000/api/upload/addcomment/${storyId}`, {
            method: 'POST',
@@ -50,10 +73,22 @@ function Comments(props) {
        const json = await response.json();
        console.log(json);
        if (json.success==="success") {
-           console.log("success mf")
-           window.location.reload();
+          axios.post('http://localhost:8000/api/post-data', {
+            data: comment
+          })
+          .then(response => {
+            setNegativeSentiment(!response.data)
+            console.log("sentiment",negativeSentiment);
+          })
+          .catch(error => {
+            console.log(error);
+          });
 
-       }
+          setCommentsUseState([json.card[0],...commentsUseState])
+          const hm=document.getElementsByClassName('CommentField')[0]
+          hm.value=""
+          
+        }
        else {
            console.log("invalid cred")
        }
@@ -61,9 +96,10 @@ function Comments(props) {
     
   return (
     <div className='CommentsJs'>
+      {negativeSentiment&&<FailureAlert heading = "Warning:" message = "We have detected a negative/hatred comment from you. If you think otherwise, report it to us for review. " setNegativeSentiment={setNegativeSentiment}/>}
         <div className="CommentsJsHeader">
             <div className="CommentsJsNumber">
-            {props.comments.length} comments
+            {commentsUseState.length} comments
             </div>
             
             <div className="CommentsJsFilter">
@@ -98,7 +134,7 @@ function Comments(props) {
         </div>
         <div className="CommentInput">
             <div className="CommentJsCardAuthorImg">
-                <img src="https://www.fastweb.com/uploads/article_photo/photo/2036641/crop635w_10-ways-to-be-a-better-student.jpeg" alt="" />
+                <img src={user&&user.profileImg} alt="" />
             </div>
                                     <textarea name='comment'  placeholder="Add your comment" 
                                     onChange={handlechange}
@@ -108,7 +144,7 @@ function Comments(props) {
         <div className="CommentInputSb" onClick={handlesubmit}>
             Submit
         </div>
-        {props.comments&&props.comments.map((element) => {
+        {commentsUseState&&commentsUseState.map((element) => {
     return <div key={rand++} style={{"padding":"0","margin":"0","width":"100%"}}>
        <CommentCard element={element}/>
     </div>

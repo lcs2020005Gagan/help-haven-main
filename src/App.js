@@ -22,8 +22,54 @@ import Explore from './components/Explore';
 import Tag from './components/Tag';
 import Chat from './components/Chat';
 import Friend from './components/Friend';
+import {CometChat} from '@cometchat-pro/chat'
+import axios from 'axios';
 
 function App() {
+    // const appID="235622dfa676fd97"
+    // const region="US"
+    // const appSetting=new CometChat.AppSettingBuilder().subscribePresenceForAllUsers().setRegion(region).build();
+    
+    // // CometChat.init(appID,appSetting).then(
+    // //     ()=>{
+    // //         console.log("initialization complete")
+    // //     },
+    // //     error=>{
+    // //         console.log("initialization failed")
+    // //     }
+    // // )
+    const ser= {'age':[20],'workclass':["State-gov"],'education_level':["Bachelors"],'education-num':[13.0],'marital-status':["Never-married"],'occupation':[''],'relationship':["Not-in-family"],'race':["White"],'sex':['Female'],'capital-gain':[0.0],'capital-loss':[0.0],'hours-per-week':[40.0],'native-country':["United-States"]};
+
+
+    const [message, setMessage] = useState('');
+    const myString = 'lack kills time';
+    
+    useEffect(() => {
+     
+
+          axios.post('http://localhost:8001/api/post-data', {
+            data: ser
+          })
+          .then(response => {
+            console.log("income",response.data);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+        
+          // axios.post('http://localhost:8000/api/post-data', {
+          //   data: myString
+          // })
+          // .then(response => {
+          //   console.log("sentiment",response.data);
+          // })
+          // .catch(error => {
+          //   console.log(error);
+          // });
+
+      }, []);
+     
+      
     return (
         <BrowserRouter>
          {window.location.pathname==="/home"&&<div className="App">
@@ -36,6 +82,7 @@ function App() {
                 <LeftNavBar />
             </div>
             <div className="CenterHomePageContainer">
+
                 <Routes>
                 <Route exact path="/" element=<HomePage /> />
                 <Route exact path="/friend" element=<Friend /> />
