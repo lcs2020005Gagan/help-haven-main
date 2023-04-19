@@ -181,9 +181,9 @@ axios.post('http://localhost:8001/api/post-data', {
                             <div className="Heading" style={{"marginBottom":"2rem"}}>
                                 Please take a moment to fill this out:
                             </div>
-                            <div className="FormFields">
+                            {/* <div className="FormFields"> */}
 
-                             <FormControl sx={{ m: 1, minWidth: 100 }} style={{"width":"100%"}}>
+                             {/* <FormControl sx={{ m: 1, minWidth: 100 }} style={{"width":"100%"}}>
         <InputLabel id="work-class">Work Class</InputLabel>
         <Select
           labelId="demo-simple-select-autowidth-label"
@@ -203,8 +203,8 @@ axios.post('http://localhost:8001/api/post-data', {
           <MenuItem value={"Local-gov"}>Local-gov</MenuItem>
    
         </Select>
-      </FormControl>
-      <FormControl sx={{ m: 1, minWidth: 100 }} style={{"width":"100%"}}>
+      </FormControl> */}
+      {/* <FormControl sx={{ m: 1, minWidth: 100 }} style={{"width":"100%"}}>
         <InputLabel id="demo-simple-select-autowidth-label">Occupation</InputLabel>
         <Select
           labelId="demo-simple-select-autowidth-label"
@@ -234,8 +234,8 @@ axios.post('http://localhost:8001/api/post-data', {
           <MenuItem value={"Other-service"}>Other-service</MenuItem>
 
         </Select>
-      </FormControl>
-      </div>
+      </FormControl> */}
+      {/* </div> */}
       <div className="FormFields">
     <FormControl sx={{ m: 1, minWidth: 100 }} style={{"width":"100%"}}>
         <InputLabel id="demo-simple-select-autowidth-label">Education</InputLabel>
@@ -361,14 +361,14 @@ axios.post('http://localhost:8001/api/post-data', {
       <div className="FormFields">
         
 
-        <div className="FormFields">
-        <TextField id="age" label="Age" variant="standard" onChange={handleChangeNote} />
-        <TextField id="hours-per-week" label="Hours per week" variant="standard" onChange={handleChangeNote} />
+        <div>
+        <TextField id="age" label="Age" variant="standard" onChange={handleChangeNote} style={{"width":"100%"}}/>
+        {/* <TextField id="hours-per-week" label="Hours per week" variant="standard" onChange={handleChangeNote} /> */}
         </div>
         <div className="FormFields">
-        <TextField id="capital-gain" label="Capital-gain" variant="standard" onChange={handleChangeNote}/>
-        <TextField id="capital-loss" label="Capital-loss" variant="standard" onChange={handleChangeNote}/>
-        <TextField id="education-num" label="Education number" variant="standard" onChange={handleChangeNote}/>
+        {/* <TextField id="capital-gain" label="Capital-gain" variant="standard" onChange={handleChangeNote}/> */}
+        {/* <TextField id="capital-loss" label="Capital-loss" variant="standard" onChange={handleChangeNote}/> */}
+        {/* <TextField id="education-num" label="Education number" variant="standard" onChange={handleChangeNote}/> */}
         </div>
    
        

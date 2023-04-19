@@ -24,6 +24,9 @@ import Chat from './components/Chat';
 import Friend from './components/Friend';
 import {CometChat} from '@cometchat-pro/chat'
 import axios from 'axios';
+import MetaMask from './components/MetaMask';
+import WalletCard from './components/WalletCard';
+import Transaction from './components/Transaction';
 
 function App() {
     // const appID="235622dfa676fd97"
@@ -88,6 +91,7 @@ function App() {
                 <Route exact path="/friend" element=<Friend /> />
                 <Route exact path="/message" element=<Chat /> />
                 <Route exact path="/tag/:tagId" element=<Tag /> />
+                <Route exact path="/metamask" element=<MetaMask /> />
                 <Route exact path="/explore/foru" element=<Explore toRender="ForYou" /> />
                 <Route exact path="/explore/trending" element=<Explore toRender="Trending" /> />
                 <Route exact path="/bookmarks" element=<BookMarks /> />

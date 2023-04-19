@@ -11,10 +11,6 @@ nltk.download('wordnet')
 nltk.download('punkt')
 nltk.download('stopwords')
 # plotting
-
-
-
-
 # sklearn
 
 from sklearn.linear_model import LogisticRegression

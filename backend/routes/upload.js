@@ -307,4 +307,21 @@ router.post('/bookmark', fetchuser, [
            .catch(error=>console.log(error));
          })
 
+         router.post('/updatecomments',  async (req, res) => {
+              try {
+                 
+                 await Comment.findOneAndUpdate({
+                    _id:id
+                  },{
+                    $set:{
+                      views:views,
+                    }
+                  })
+                 const card=await Card.find({_id:id});
+                  res.json({"card":card,"success":true});
+              } catch (error) {
+                  console.error(error.message);
+                  res.status(500).send("Internal Server Error");
+              }
+          })
 module.exports=router

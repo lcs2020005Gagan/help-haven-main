@@ -17,11 +17,11 @@ function HomePageCard(props) {
     const [bookmarkedCards,setBookmarkedCards]=useState(props.bookmarks)
     const navigate=useNavigate()
     const handleClick=()=>{
-        navigate(`/story/${props.element._id}`)
+        navigate(`/story/${props.element?._id}`)
     }
     const handleUpvote= async(e)=>{
             console.log("going in")
-            const card_id=props.element._id
+            const card_id=props.element?._id
             const response=await fetch("http://localhost:5000/api/upload/upvote",{
                 method: 'POST',
                 headers: {
@@ -46,7 +46,7 @@ function HomePageCard(props) {
         }
     const handleBookmark= async(e)=>{
             console.log("going in")
-            const card_id=props.element._id
+            const card_id=props.element?._id
             const response=await fetch("http://localhost:5000/api/upload/bookmark",{
                 method: 'POST',
                 headers: {
@@ -61,7 +61,7 @@ function HomePageCard(props) {
             {
               //redirect
               console.log("success mf")
-              setBookmarkedCards([...bookmarkedCards,props.element._id]);
+              setBookmarkedCards([...bookmarkedCards,props.element?._id]);
             }
             else
             {
@@ -74,35 +74,35 @@ function HomePageCard(props) {
 
       {props&&<div className="whole-card-effect">
       <div className="whole-card-views">
-        {props.element.views} views
+        {props.element?.views} views
       </div>
        
              <div className="card-container">
         <div className="left">
             <div>
-            <img src={props.element.image} alt="" />
+            <img src={props.element?.image} alt="" />
             </div>
             
 
         </div>
         <div className="right">
             <h3 className='textClip-2'>
-                {props.element.title}
+                {props.element?.title}
             </h3>
             <div className="card-author">
-                <img src={props.element.author.profileImg} alt="" />
-                {props.element.author.name}
+                <img src={props.element?.author?.profileImg} alt="" />
+                {props.element?.author?.name}
             </div>
             <hr />
             <div className="right-content textClip-5">
-             {props.element.description}
+             {props.element?.description}
             </div>
 
         </div>
     </div>
     <div className="ChipContainerHomePageCard">
       {
-        props.element.tags.map((element) => {
+        props.element?.tags.map((element) => {
           return        <Chip2  key={rand++} chip={element}/>
           })
       }
@@ -114,7 +114,7 @@ function HomePageCard(props) {
                 </div>
                 <div className="icons">
                     <BiUpvote onClick={handleUpvote}/>
-                   {bookmarkedCards?.includes(props.element._id)?<BsBookmarkCheckFill className='DarkGreen' onClick={handleBookmark}/>:<BsBookmarkPlus onClick={handleBookmark}/>}
+                   {bookmarkedCards?.includes(props.element?._id)?<BsBookmarkCheckFill className='DarkGreen' onClick={handleBookmark}/>:<BsBookmarkPlus onClick={handleBookmark}/>}
                     <AiOutlineShareAlt/>
                     <AiOutlineEye onClick={handleClick}/>
                 </div>
