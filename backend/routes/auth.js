@@ -2,6 +2,7 @@ const express=require("express")
 const bodyParser = require("body-parser");
 const User=require("../models/Users")
 const Card=require("../models/Cards")
+const nodemailer = require("nodemailer");
 let fetchuser=require("../middleware/fetchuser")
 const router=express.Router()
 const app =express()
@@ -11,6 +12,7 @@ const { body, validationResult } = require('express-validator');
 var bcrypt = require('bcryptjs');
 const secretKey="helloworld"
 var jwt=require("jsonwebtoken");
+var verificationCode=123456
 // const fetchmentor = require("../middleware/fetchmentor");
 // let success=false
 
@@ -46,8 +48,37 @@ router.post('/createuser',
 
         }
         else{
-            var salt =await bcrypt.genSaltSync(10);
-var secpassword =  await bcrypt.hashSync(req.body.password, salt);
+          const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+              user: "verifyhelphaven@gmail.com",
+              pass: "fvbvqckxfmgkegys"
+            }
+          });
+          
+          async function sendVerificationEmail(email) {
+            verificationCode = Math.floor(Math.random() * 900000) + 100000;
+            console.log("verif code",verificationCode)
+            const mailOptions = {
+              from: "verifyhelphaven@gmail.com",
+              to: email,
+              subject: "Please verify your email address",
+              text: `Your verification code is ${verificationCode}`
+            };
+            
+            return transporter.sendMail(mailOptions)
+              .then(() => {
+                return verificationCode;
+              })
+              .catch((err) => {
+                throw new Error("Failed to send verification email: " + err);
+              });
+          }
+          
+          const response = await sendVerificationEmail(req.body.email)
+          
+            var salt = bcrypt.genSaltSync(10);
+var secpassword =   bcrypt.hashSync(req.body.password, salt);
 console.log(secpassword);
        user=await  User.create({
             name:req.body.name,
@@ -77,12 +108,29 @@ res.send("hello");
 );
 
 
-//add friend
-router.post('/addfriend', fetchuser, [
-  body('user_id'),
+
+//verify otp
+router.post('/verifyotp', [
+  body('otp'),
  ], async (req, res) => {
       try {
-          const user_id = req.body.user_id;
+        var ans=true
+        console.log("from otp backend",typeof(verificationCode),typeof(req.body.otp))
+         if(verificationCode!=req.body.otp)
+         ans=false;
+         res.json({"result":ans})
+      } catch (error) {
+          console.error(error.message);
+          res.status(500).send("Internal Server Error");
+      }
+  })
+
+//add friend
+router.post('/addfriend/:user_id', fetchuser, [
+ 
+ ], async (req, res) => {
+      try {
+          const user_id = req.params.user_id;
          await User.findOneAndUpdate({
             _id:req.id
           },{
@@ -98,7 +146,7 @@ router.post('/addfriend', fetchuser, [
             }
           })
           const user=await User.find({_id:req.id});
-          res.json(user);
+          res.json({"message":"friend added successfully","user":user});
       } catch (error) {
           console.error(error.message);
           res.status(500).send("Internal Server Error");
@@ -106,6 +154,66 @@ router.post('/addfriend', fetchuser, [
   })
 
  
+  //donation backend
+router.post('/donate', fetchuser, [
+  body('card_id'),
+  body('amountGiven')
+ ], async (req, res) => {
+      try {
+          const card_id = req.body.card_id;
+          const amountGiven = req.body.amountGiven;
+          console.log(card_id,amountGiven)
+         await User.findOneAndUpdate({
+            _id:req.id
+          },{
+            $push:{
+              donationsGiven:card_id
+            },
+            $inc:{
+              amountDonated:amountGiven
+            }
+          })
+          const temp=await Card.find({_id:card_id});
+          if(!temp){
+            res.json("card note found")
+          }
+          await Card.findOneAndUpdate({
+            _id:card_id
+          },{
+            $inc:{
+              amountDonated:amountGiven
+            },
+            $inc:{
+              donations:1
+            }
+          })
+          const user=await User.find({_id:req.id});
+          const card=await Card.find({_id:card_id});
+          res.json({"user":user,"card":card});
+      } catch (error) {
+          console.error(error.message);
+          res.status(500).send("Internal Server Error");
+      }
+  })
+  //add hate comment
+router.post('/hatecomment/:hateCommentId', fetchuser, [
+ ], async (req, res) => {
+      try {
+          const comment = req.params.hateCommentId;
+         await User.findOneAndUpdate({
+            _id:req.id
+          },{
+            $push:{
+              hateComments:comment
+            }
+          })
+          const user=await User.find({_id:req.id});
+          res.json({"user":user});
+      } catch (error) {
+          console.error(error.message);
+          res.status(500).send("Internal Server Error");
+      }
+  })
 
 
 
@@ -139,7 +247,7 @@ async (req, res) => {
 //get all user
 router.get('/gettopdonors',
   async (req, res) => {
-    await User.find().sort({donationsGiven:-1}).limit(3)
+    await User.find().sort({"donationsGiven":-1}).limit(3)
   .select("-password")
   .exec()
   .then(p=>{
@@ -189,6 +297,34 @@ router.post('/updateuserprofileimg', fetchuser, [
           res.status(500).send("Internal Server Error");
       }
   })
+
+  //update deleted friend
+router.post('/deletefriend/:user_id', fetchuser, [
+ ], async (req, res) => {
+      try {
+          const user_id = req.params.user_id;
+         await User.findOneAndUpdate({
+            _id:req.id
+          },{
+            $pull:{
+              following:user_id
+            }
+          })
+         await User.findOneAndUpdate({
+            _id:user_id
+          },{
+            $pull:{
+              followers:req.id
+            }
+          })
+         const user=await User.find({_id:req.id});
+          res.json({"message":"friend deleted successfully","user":user});
+      } catch (error) {
+          console.error(error.message);
+          res.status(500).send("Internal Server Error");
+      }
+  })
+
 router.post('/updateuserlikedcards', fetchuser, [
   body('likedCards'),
  ], async (req, res) => {

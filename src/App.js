@@ -27,6 +27,9 @@ import axios from 'axios';
 import MetaMask from './components/MetaMask';
 import WalletCard from './components/WalletCard';
 import Transaction from './components/Transaction';
+import CreditCard from './components/CreditCard';
+import CreditCardSuccess from './components/CreditCardSuccess';
+import ProgressBar from './components/ProgressBar';
 
 function App() {
     // const appID="235622dfa676fd97"
@@ -99,6 +102,9 @@ function App() {
                 <Route exact path="/profile/:profileId/liked" element=<Profile toRender={"liked"} /> />
                 <Route exact path="/profile/:profileId/bookmarked" element=<Profile toRender={"bookmarked"} /> />
                 <Route exact path="/story/:storyId" element=<Story /> />
+                <Route exact path="/creditcard" element=<CreditCard /> />
+                <Route exact path="/creditcardsuccess" element=<CreditCardSuccess /> />
+                <Route exact path="/progress" element=<ProgressBar /> />
                 </Routes>
                 {/* <div className="RightHomePageContainer">
         <RightNavBar/>

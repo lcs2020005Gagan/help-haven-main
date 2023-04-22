@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ButtonComp from './ButtonComp'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import CommentCard from './CommentCard'
 import Comments from './Comments'
 import Chip from './Chip'
@@ -55,21 +55,25 @@ function Story() {
             </div>
             <div className="author-and-donation">
                 <div className="author-name">
+                <Link to={`/profile/${card.author._id}`}>
                 <div className="card-author">
                 <img src={card.author.profileImg} alt="" />
                 {card.author.name}
             </div>
+                    </Link>
                     <br />
                     {new Date(card.date).toUTCString().substring(0,16)}
-
                 </div>
-                <div className="donate-btn">
-                    <ButtonComp className="donate-btn" title={"Donate"} />
-                </div>
+                <Link to={`/creditcard?title=${card.title}&image=${card.image}&cardId=${card._id}&authname=${card.author.name}&authprofile=${card.author.profileImg}`} className="donate-btn" >
+                    <ButtonComp className="donate-btn" title={"Donate Money"} />
+                </Link>
+                <Link to={`/metamask?title=${card.title}&image=${card.image}&cardId=${card._id}&authname=${card.author.name}&authprofile=${card.author.profileImg}`} className="donate-btn" >
+                    <ButtonComp className="donate-btn" title={"Donate Crypto"} />
+                </Link>
                 <div className="donation-count">
-                    <span>Amount Donated : </span> 0
+                    <span>Amount Donated : </span>₹ {Math.round(card?.amountDonated)} 
                     <br />
-                    <span>Amount Needed : </span> 10000$
+                    <span>Donation Goal : </span>₹ {card?.amountRequired}
                 </div>
             </div>
             <div className="full-details">

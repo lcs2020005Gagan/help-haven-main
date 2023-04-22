@@ -1,13 +1,20 @@
 import React from 'react'
 import {BiHomeCircle} from 'react-icons/bi'
 import {Link } from 'react-router-dom'
+import Drawer from "./Drawer"
 function NavBar(props) {
   return (
     <>
     <div className='NavBar'>
-      <div className="hm">
+      <div className="hm" style={{"display":"flex"}}>
+          <div className="ok" style={{"marginLeft":"auto"}}>
 
-          {props.title}
+          {props.title} 
+          </div>
+          <div className="upper-left-icon-draw" style={{"marginLeft":"auto"}}>
+         { (props.title=="Home"||props.title==="Bookmarks")&&<Drawer/>}
+
+          </div>
       </div>
       {props.title==="Explore"&& <div className='ProfileJsTabs' >
             <div className={`${props.toRender==="ForYou"?"UlListActive":""} ProfileJsTabsLi`}>

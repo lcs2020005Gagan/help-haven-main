@@ -16,6 +16,9 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 
+
+
+
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
@@ -276,9 +279,10 @@ axios.post('http://localhost:8001/api/post-data', {
           autoWidth
           label="Country"
         >         
-{['Mexico', 'Portugal', 'United-States', 'Iran', 'Honduras', 'Peru', 'Jamaica', 'Philippines', 'Cambodia', 'Haiti', 'Italy', 'Holand-Netherlands', 'Cuba', 'China', 'Greece', 'India', 'Nicaragua', 'El-Salvador', 'Guatemala', 'Columbia', 'Taiwan', 'France', 'Poland', 'South', 'Vietnam', 'Puerto-Rico', 'Trinadad&Tobago', 'Canada', 'Ecuador', 'Japan', 'Ireland', 'Hungary', 'Hong', 'Dominican-Republic', 'England', 'Outlying-US(Guam-USVI-etc)', 'Scotland', 'Yugoslavia', 'Germany', 'Laos', 'Thailand'].map(country => (
+{['Cambodia', 'Canada', 'China', 'Columbia', 'Cuba', 'Dominican-Republic', 'Ecuador', 'El-Salvador', 'England', 'France', 'Germany', 'Greece', 'Guatemala', 'Haiti', 'Holand-Netherlands', 'Honduras', 'Hong', 'Hungary', 'India', 'Iran', 'Ireland', 'Italy', 'Jamaica', 'Japan', 'Laos', 'Mexico', 'Nicaragua', 'Outlying-US(Guam-USVI-etc)', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Puerto-Rico', 'Scotland', 'South', 'Taiwan', 'Thailand', 'Trinadad&Tobago', 'United-States', 'Vietnam', 'Yugoslavia'].map(country => (
   <MenuItem value={country} key={country}>{country}</MenuItem>
 ))}    </Select>
+
       </FormControl>
 
       </div>

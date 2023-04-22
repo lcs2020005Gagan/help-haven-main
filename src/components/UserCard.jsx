@@ -93,8 +93,8 @@ function UserCard(props) {
                 <div className="UserCardTitle textClip-2">
                     {card.title}
                 </div>
-                <div className="UserCardDescription textClip-3">
-                    {card.description} Lorem ipsum dolor sit amet consectetur, adipisicing elit. Natus aut cumque ipsum dignissimos debitis aspernatur reiciendis dolor quas nemo sapiente hic, ea incidunt molestias repellat? Consequuntur sapiente deleniti eos! Numquam?
+                <div className="UserCardDescription textClip-3" style={{"fontSize":"1rem"}}>
+                    {card.description}
                 </div>
               </div>
               <div className="UserCardMiddleRight">

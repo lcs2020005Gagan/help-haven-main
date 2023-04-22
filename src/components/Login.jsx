@@ -6,6 +6,7 @@ import Modal from '@mui/material/Modal';
 import {FaShareAlt} from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom';
 import {FiLogOut} from 'react-icons/fi';
+import ReactCodeInput from 'react-verification-code-input';
 
 import {
     MDBContainer,
@@ -38,6 +39,7 @@ import ButtonComp from './ButtonComp';
 
 export default function BasicModal(props) {
   const [open, setOpen] = React.useState(false);
+  const [showOtp, setShowOtp] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const shareUrl = props.link;
@@ -75,9 +77,35 @@ export default function BasicModal(props) {
         }
 
     }
+    const [otp,setOtp]=useState()
+  const handleOtp= async(e)=>{
+    e.preventDefault();
+    console.log("otp",otp)
+const response=await fetch("http://localhost:5000/api/auth/verifyotp",{
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',              
+            },
+            body: JSON.stringify({otp}),
+          });
+        const json=await response.json();
+        console.log(json)
+        if(json.result)
+        {
+          navigate("/");
+          window.location.reload();
+        }
+        else
+        {
+         alert("invalid otp")
+        }
+
+    }
+    const handleOtpChange=(e)=>{
+      setOtp(e)
+    }
   const handleup=(e)=>{
       setup({...up,   [e.target.name]:e.target.value})
-
     }
     const submitup= async(e)=>{
       e.preventDefault();
@@ -95,6 +123,7 @@ export default function BasicModal(props) {
               },
               body: JSON.stringify({name,email,about,password,profileImg,bannerImg}),
             });
+            setShowOtp(true);
           const json=await response.json();
           console.log(json.success);
           if(json.success)
@@ -102,14 +131,14 @@ export default function BasicModal(props) {
             //redirect
             console.log(json);
             localStorage.setItem('token',json.authtoken)
-            navigate("/");
-            window.location.reload();
+            // navigate("/");
+            // window.location.reload();
         }
           else
           {
-            console.log("invalid cred")
+            alert("invalid cred")
           }
-  
+
       }
 
  
@@ -120,7 +149,6 @@ export default function BasicModal(props) {
     if (value === justifyActive) {
       return;
     }
-
     setJustifyActive(value);
   };
   return (
@@ -201,7 +229,7 @@ export default function BasicModal(props) {
 {justifyActive==="tab2"&&<MDBTabsPane show={justifyActive === 'tab2'} style={{"display":"flex","flexDirection":"column","gap":"0.7rem","overflow":"auto","justifyContent":"center","justifyContent":"center"}}>
 
   
-<input  className='SearchBox' label='Name' id='form1' name='name' type='text' onChange={handleup} placeholder="Name"/>
+{showOtp===false&&<><input  className='SearchBox' label='Name' id='form1' name='name' type='text' onChange={handleup} placeholder="Name"/>
 <textarea name='about' style={{"height":"10rem"}} onChange={handleup} placeholder="Add about" className='FormField'>
 </textarea>
 <input  className='SearchBox' label='Email' id='form1' name='email' type='email' onChange={handleup} placeholder="Email"/>
@@ -211,7 +239,18 @@ export default function BasicModal(props) {
    
     <div data-dismiss="Modal" onClick={submitup} style={{"display":"flex","width":"5rem","alignItems":"center","justifyContent":"center"}}>
 <ButtonComp title="Sign up" />
+
 </div>
+</>}
+ {showOtp&&
+ <div className="okOtp">
+  Otp has been sent to {up.email}
+  <ReactCodeInput onChange={handleOtpChange}/>
+  <div style={{"display":"flex","width":"5rem","alignItems":"center","justifyContent":"center"}} onClick={handleOtp}>
+    <ButtonComp title="Enter"/>
+  </div>
+</div>
+}
     {/* <ButtonComp title="Sign Up" data-dismiss="Modal" /> */}
     {/* <MDBBtn className="mb-4 w-100" data-dismiss="Modal" onClick={submitup}>Sign up</MDBBtn> */}
 

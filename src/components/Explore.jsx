@@ -65,7 +65,6 @@ function Explore(props) {
 })}
   
         </div>
-        <RightNavBar/>
     </div>}
     </>
   )

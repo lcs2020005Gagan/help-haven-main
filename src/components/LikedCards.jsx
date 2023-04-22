@@ -7,7 +7,7 @@ function PublishedRequests(props) {
 
     
   return (
-    <div className='PublishedRequests'>
+    <div className={`${props.urlIs==="profile"?"PublishedRequests2":"PublishedRequests"}`}>
         {props.PublishedRequests&&props.PublishedRequests. map((element) => {
     return <div key={rand++} style={{"padding":"0","margin":"0","width":"100%"}}>
        <UserCard element={element}/>

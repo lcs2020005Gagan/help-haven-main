@@ -83,6 +83,14 @@ following:[{
   greaterThan50K:{
     type:Boolean,
     default:false
+  },
+  creditScore:{
+    type:Number,
+    default:0
+  },
+  amountDonated:{
+    type:Number,
+    default:0
   }
 });
 const users=mongoose.model("users",usersSchema);

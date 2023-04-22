@@ -4,9 +4,19 @@ import React, {useState} from 'react';
 // import  {ethers} from 'ethers';
 import Axios from 'axios'; 
 import ButtonComp from './ButtonComp';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 const MetaMask = (props) => {
+  const navigate=useNavigate();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const title = searchParams.get('title');
+  const profile = searchParams.get('authname');
+  const profileimg = searchParams.get('authprofile');
+  const image = searchParams.get('image');
+  const cardId = searchParams.get('cardId');
+
 
   const [errorMessage, setErrorMessage] = useState(null);
   const [defaultAccount, setDefaultAccount] = useState(null);
@@ -63,6 +73,7 @@ const MetaMask = (props) => {
         console.log("balance", balance)
       setUserBalance(ethers?.utils?.formatEther(balance));
       console.log(errorMessage,defaultAccount,userBalance)
+      
     })
   }
   catch(error){
@@ -84,6 +95,26 @@ const MetaMask = (props) => {
             console.log(err)
         })
         console.log("after transaction is",result)
+        const card_id=cardId
+        const amountGiven=note.amount*170214 ;
+          const response=await fetch("http://localhost:5000/api/auth/donate",{
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'auth-token':localStorage.getItem("token")
+                },
+                body: JSON.stringify({card_id,amountGiven}),
+              });
+            const json=await response.json();
+            console.log(json);
+            if(json.user)
+            {
+              navigate(`/creditcardsuccess?authname=${profile}&authprofile=${profileimg}&cardId=${cardId}&source=metamask`);
+            }
+            else
+            {
+              alert("Couldn't process transaction")
+            }
       }
       catch(error){
         console.log(error)
@@ -91,7 +122,7 @@ const MetaMask = (props) => {
   }
 
   return (
-    <div>
+    <div className='Metamask'>
      {/* <h1>MetaMask Wallet Connection </h1>
         <button onClick={connectWallet}>Connect Wallet Button</button>
         <h3>Address: {defaultAccount}</h3>
@@ -100,16 +131,31 @@ const MetaMask = (props) => {
         <input type="text" name="to_address" placeholder="Address: " />
         {errorMessage}
         <button onClick={sendTransaction}>send</button> */}
-        <div className="Ok" onClick={connectWallet}>
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAIGhgoYnRrLMWxlZp9ti6JnQ8lqgdbrS3-KoY4e5CwrCQ5mhgsd-y03fao6aGXaK5g44&usqp=CAU" alt="" />
+        <div className="Ok" onClick={connectWallet} style={{"width":"15rem"}}>
           <ButtonComp title="Connect MetaMask Wallet" />
-          {defaultAccount}
-        
         </div>
-          <input  className='SearchBox' label='Email address' id='form1' name='amount' type='text' onChange={handlechange} placeholder="Enter amount"/>
-          <div className="ok" onClick={sendTransaction}>
-          <ButtonComp title="Send money" />
+        <div className="ok">
+          <h1 style={{"color":"white"}}>
+          {defaultAccount&&"Metamask Wallet connected successfully!"}
+          {!defaultAccount&&"Connect your Metamask wallet to donate!"}
+          </h1>
+          <h5 style={{"color":"white"}}>
 
-          </div>
+          {defaultAccount&&"Your Wallet Address is: "}
+          </h5>
+          <h6 style={{"color":"grey"}}>
+
+          {defaultAccount}
+          </h6>
+
+        </div>
+      {defaultAccount&&
+
+          <input  className='SearchBox' label='Email address' id='form1' name='amount' type='text' onChange={handlechange} placeholder="Enter Etheureum (1 eth =  1,60,642 ₹)"/>}
+                {defaultAccount&&<div className="ok" onClick={sendTransaction}  style={{"width":"7rem"}}>
+          <ButtonComp title="Donate" />
+        </div>}
     </div>
 
   )

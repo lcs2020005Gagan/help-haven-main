@@ -1,14 +1,36 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {BsDot} from 'react-icons/bs'
 import {FaRegThumbsUp,FaRegThumbsDown,FaThumbsDown,FaThumbsUp} from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
+import axios from 'axios';
 
 function CommentCard(props) {
      
 
 const [likes, setlikes] = useState(1) 
+const [reveal, setReveal] = useState(true) 
 const [liked, setliked] = useState("") 
+useEffect(() => {
+    // console.log("hello")
+      setReveal(true)
+       axios.post('http://localhost:8000/api/post-data', {
+         data: props.element.comment
+       })
+       .then(response => {
+         setReveal(response.data)
+        //  console.log("reveal?"+props.element.comment,reveal);
+       })
+       .catch(error => {
+         console.log(error);
+       });
+
+       
+    
+}, [])
+
+
+
    const handleLiked=()=>{
     if(liked==="l")
     {
@@ -43,9 +65,12 @@ const [liked, setliked] = useState("")
         setlikes(likes-2);
       }
     }
+    const handleReveal=()=>{
+      setReveal(true)
+    }
   return (
     <>
-    {props.element&&<div className='CommentCard'>
+    {props.element&&<div className='CommentCardPar'>{<div className={`CommentCard ${!reveal?"BlurContent":""}`}>
         <div className="CommentCardAuthorImg">
             <img src={props.element.author.profileImg} alt="" />
         </div>
@@ -70,6 +95,12 @@ const [liked, setliked] = useState("")
             </div>
         </div>
     </div>}
+    {!reveal&&<div className='Discretion'>
+    This comment is categorized as <span style={{"color":"crimson"}}>harmful/spam</span> content by our ML MODEL. Click show to view.
+<div className="Reveal" onClick={handleReveal}>Show</div>
+    </div>}
+    </div>
+    }
     </>
   )
 }

@@ -36,11 +36,12 @@ function BookMarks() {
 
   return (
     <div className='ProfileJs'>
+      
         {user&&user.bookmarkedCards.length?<div className="RightAndLeft">
         <NavBar title={"Bookmarks"}/>
         <PublishedRequests PublishedRequests={user.bookmarkedCards}/>
         </div>:<NoContent NoContentTitle={"No Bookmarks Found"} NoContentMessage={"The posts you bookmark will appear here"}/>}
-        <RightNavBar/>
+        {/* <RightNavBar/> */}
 
 
     </div>

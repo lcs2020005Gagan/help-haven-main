@@ -6,12 +6,16 @@ import RightNavBar from './RightNavBar'
 import { Button } from 'react-bootstrap';
 import * as XLSX from 'xlsx';
 import SuccessAlert from './SuccessAlert'
+import { useNavigate } from 'react-router-dom'
+import Drawer from './Drawer'
 function HomePage() {
   var rand=0
   const host="http://localhost:5000"
   const [user,setUser]=useState([])
+  const navigate=useNavigate()
   const [articles,setArticles]=useState([])
   useEffect(() => {
+
     const func=async()=>{
       const response=await fetch(`${host}/api/upload/getallcards`,{
           method: 'GET',
@@ -29,7 +33,7 @@ function HomePage() {
           });
     
           const json=await response.json();
-         setUser(json[0])
+         setUser((json[0]))
         }
         getUserProfile();
       func();
@@ -60,14 +64,17 @@ function HomePage() {
        <div className="HomePage">
         <div className="RightAndLeft">
         <NavBar title={"Home"}/>
+        <div className="HomePageCardsContainer">
+
         {articles&&user&&articles.map((element) => {
     return <div key={rand++} style={{"padding":"0","margin":"0","width":"100%"}}>
        <HomePageCard element={element} bookmarks={user.bookmarkedCards} upvotes={user.likedCards}/>
     </div>
 })}
+        </div>
 {articles&&articles.length===0&&<NoContent NoContentTitle="No Posts to view" NoContentMessage="Please check back later"/>}
         </div>
-        <RightNavBar/>
+        {/* <RightNavBar/> */}
        </div>
     )
 }

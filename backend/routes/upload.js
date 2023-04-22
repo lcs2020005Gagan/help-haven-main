@@ -17,6 +17,8 @@ var jwt=require("jsonwebtoken");
  
 
 
+
+
   //addcard
   router.post('/addcard', fetchuser, [
     body('title', 'Enter a valid title').isLength({ min: 1}),
@@ -251,10 +253,11 @@ router.post('/bookmark', fetchuser, [
        //addcomment
   router.post('/addcomment/:cardId', fetchuser, [
     body('comment', 'Enter a valid comment').isLength({ min: 1}),
+    body('negativeSentiment')
    ], async (req, res) => {
         try {
             const { comment } = req.body;
-
+            const harmful=req.body.negativeSentiment;
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(400).json({ errors: errors.array() });
@@ -262,7 +265,8 @@ router.post('/bookmark', fetchuser, [
             
             const card = new Comment({
                 comment,author: req.id,
-                card:req.params.cardId
+                card:req.params.cardId,
+                harmful:harmful
                 })
             const savedCard = await card.save()
             await User.findOneAndUpdate({

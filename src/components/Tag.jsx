@@ -62,17 +62,16 @@ function Tag(props) {
     },[loading])
   return (
     <>
-    {loading?<NoContent/>:<div className='ProfileJs'>
-        <div className="rightAndLeft">
+    {loading?<NoContent/>:<div className='ProfileJs' >
             <NavBar title={`#${tagId}`}  />
+            <div className="ok" style={{"display":"grid","gridTemplateColumns":"1fr 1fr"}}>
+
             {tags&&tags[tagId]&&tags[tagId].map((element) => {
     return <div key={rand++} style={{"padding":"0","margin":"0","width":"100%"}}>
        <HomePageCard element={element}/>
     </div>
 })}
-  
-        </div>
-        <RightNavBar/>
+            </div>
     </div>}
     </>
   )

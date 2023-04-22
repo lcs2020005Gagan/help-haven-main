@@ -5,7 +5,11 @@ import {BsBookmarkPlus,BsBookmarkCheckFill} from 'react-icons/bs'
 import {FiMessageSquare} from 'react-icons/fi'
 import {AiOutlineShareAlt,AiOutlineEye} from 'react-icons/ai'
 import Badge from '@mui/material/Badge';
-
+import Tooltip from '@mui/material/Tooltip';
+import { CircularProgressbar,buildStyles } from 'react-circular-progressbar';
+import "react-circular-progressbar/dist/styles.css";
+import VisibilitySensor from "react-visibility-sensor";
+import 'react-circular-progressbar/dist/styles.css';
 import { Link, useNavigate } from 'react-router-dom';
 import Chip from './Chip'
 import Chip2 from './Chip2';
@@ -89,10 +93,13 @@ function HomePageCard(props) {
             <h3 className='textClip-2'>
                 {props.element?.title}
             </h3>
+            <Link to={`/profile/${props.element?.author._id}`}>
+
             <div className="card-author">
                 <img src={props.element?.author?.profileImg} alt="" />
                 {props.element?.author?.name}
             </div>
+            </Link>
             <hr />
             <div className="right-content textClip-5">
              {props.element?.description}
@@ -109,11 +116,31 @@ function HomePageCard(props) {
 
     </div>    
     <div className='bottom-container'>
-                <div className="percentage">
-                    0%
-                </div>
+      <div className="percentage">
+      <VisibilitySensor>
+            {({ isVisible }) => {
+              const percentage = isVisible ? 90 : 0;
+              return (
+                <CircularProgressbar
+                styles={buildStyles({
+                  textColor: 'white',
+                  trailColor: 'black',
+                  pathColor:'aqua',
+                  backgroundColor: '#b1f9b7',
+                })}
+              
+              value={Math.min(100,Math.round(props.element.amountDonated/props.element.amountRequired*100))} text={`${Math.min(100,Math.round(props.element.amountDonated/props.element.amountRequired*100))}%`} />
+              );
+            }}
+          </VisibilitySensor>
+     
+      </div>
+  
+
                 <div className="icons">
+                    <Tooltip title="Upvote">
                     <BiUpvote onClick={handleUpvote}/>
+                    </Tooltip>
                    {bookmarkedCards?.includes(props.element?._id)?<BsBookmarkCheckFill className='DarkGreen' onClick={handleBookmark}/>:<BsBookmarkPlus onClick={handleBookmark}/>}
                     <AiOutlineShareAlt/>
                     <AiOutlineEye onClick={handleClick}/>

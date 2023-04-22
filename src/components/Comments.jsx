@@ -16,7 +16,7 @@ import { useParams } from 'react-router-dom';
 import FailureAlert from './FailureAlert';
 import axios from 'axios';
 
-function Comments(props) {
+function Comments(props)  {
      
   const host="http://localhost:5000"
   const [user,setUser]=useState(null)
@@ -56,6 +56,19 @@ function Comments(props) {
    }
 
    const [commentsUseState,setCommentsUseState]=useState(props.comments)
+   
+   const updateUserHateComments=async(hateCommentId)=>{
+    console.log("hatred",hateCommentId)
+    const response = await fetch(`http://localhost:5000/api/auth/hatecomment/${hateCommentId}`, {
+      method: 'POST',
+      headers: {
+          'auth-token':(localStorage.getItem('token')),
+          'Content-Type': 'application/json',
+      }
+      });
+  const json = await response.json();
+  console.log("after adding hate",json);
+}
    const handlesubmit = async (e) => {
        // console.log("hello")
        setNegativeSentiment(false)
@@ -79,21 +92,22 @@ function Comments(props) {
           .then(response => {
             setNegativeSentiment(!response.data)
             console.log("sentiment",negativeSentiment);
+        
           })
           .catch(error => {
             console.log(error);
           });
-
           setCommentsUseState([json.card[0],...commentsUseState])
           const hm=document.getElementsByClassName('CommentField')[0]
           hm.value=""
-          
+          if(negativeSentiment){
+            updateUserHateComments(json.card[0]._id)
+          }
         }
        else {
            console.log("invalid cred")
        }
    } 
-    
   return (
     <div className='CommentsJs'>
       {negativeSentiment&&<FailureAlert heading = "Warning:" message = "We have detected a negative/hatred comment from you. If you think otherwise, report it to us for review. " setNegativeSentiment={setNegativeSentiment}/>}

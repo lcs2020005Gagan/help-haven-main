@@ -10,7 +10,7 @@ function TopTrendingCard(props) {
             {props.element.title}
         </div>
         <div className="TopTrendingCardDonations">
-            {props.element.priority} donations
+            {props.element.donations} donations
         </div>
         </Link>
     </div>

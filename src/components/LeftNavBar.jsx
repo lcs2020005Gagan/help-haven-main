@@ -6,12 +6,13 @@ import {FiMessageSquare} from 'react-icons/fi'
 import {FaHands} from 'react-icons/fa'
 import {BsTwitter} from 'react-icons/bs'
 import {AiOutlineHome,AiTwotoneHome} from 'react-icons/ai'
+import {FiLogOut} from 'react-icons/fi'
 import {MdOutlineExplore} from 'react-icons/md'
 import ButtonComp from './ButtonComp'
 import PopUp from './PopUp'
 import PopUpDetails from './PopUpDetails'
 
-import { Link, useParams ,useLocation} from 'react-router-dom';
+import { Link, useParams ,useLocation, useNavigate} from 'react-router-dom';
 import PopUpPostRequest from './PopUpPostRequest'
 
 function LeftNavBar() {
@@ -20,7 +21,7 @@ function LeftNavBar() {
     var rand=0
     const params=useParams()
     const {profileId} =useParams();
-   
+   const navigate=useNavigate()
     const host="http://localhost:5000"
     const [user,setUser]=useState(null)
 
@@ -48,6 +49,10 @@ function LeftNavBar() {
         for(let i=1;i<str.length;i++)
         {if(str[i]=='/')return res;
         res+=str[i]}
+    }
+    const handleLogOut=()=>{
+      localStorage.clear();
+      window.location.reload()
     }
 
     
@@ -80,17 +85,23 @@ function LeftNavBar() {
             <Link to="/explore/foru">
             <li className={`LeftNavBarLi ${func(location.pathname)==="/explore"?"LeftNavActive":""}`}>{func(location.pathname)!=="/explore"&&<MdOutlineExplore/>} {func(location.pathname)==="/explore"&&<MdExplore/>} Explore</li>
             </Link>
-            <Link to="/message">
-            <li className={`LeftNavBarLi ${func(location.pathname)==="/message"?"LeftNavActive":""}`}>{func(location.pathname)!=="/message"&&<MdOutlineMessage/>} {func(location.pathname)==="/message"&&<MdMessage/>} Messages</li>
-            </Link>
+            {localStorage.getItem("token")&&<Link to="/message">
+         <li className={`LeftNavBarLi ${func(location.pathname)==="/message"?"LeftNavActive":""}`}>{func(location.pathname)!=="/message"&&<MdOutlineMessage/>} {func(location.pathname)==="/message"&&<MdMessage/>} Messages</li>
+            </Link>}
             {/* <li className='LeftNavBarLi'><FiMessageSquare/> Messages</li> */}
-            <Link to="/bookmarks">
+            {localStorage.getItem("token")&& <Link to="/bookmarks">
              <li className={`LeftNavBarLi ${location.pathname==="/bookmarks"?"LeftNavActive":""}`}>{location.pathname!=="/bookmarks"&&<BsBookmarks/>} {location.pathname==="/bookmarks"&&<BsBookmarksFill/>} Bookmarks</li>
-            </Link>
-            <Link to="/profile/self">
+            </Link>}
+            {localStorage.getItem("token")&&  <Link to="/profile/self">
             <li className={`LeftNavBarLi ${func(location.pathname)==="/profile"?"LeftNavActive":""}`}>{func(location.pathname)!=="/profile"&&<BsPerson/>} {func(location.pathname)==="/profile"&&<BsFillPersonFill/>} Profile</li>
-            </Link>
-            <PopUp/>
+            </Link>}
+            <div onClick={handleLogOut}>
+              {!localStorage.getItem("token")?<a href="/home">
+            <li className={`LeftNavBarLi`}><FiLogOut/> LogIn</li>
+              </a>:<li className={`LeftNavBarLi`} onClick={handleLogOut}><FiLogOut/> Logout</li>
+}
+            </div>
+            {localStorage.getItem("token")&&<PopUp/>}
         </ul>
     </div>
   )

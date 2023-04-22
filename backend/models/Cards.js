@@ -54,6 +54,14 @@ commentsSection:[{
   donations:{
     type:Number,
   },
+  amountRequired:{
+    type:Number,
+    default:10000
+  },
+  amountDonated:{
+    type:Number,
+    default:0
+  }
 });
 const cards=mongoose.model("cards",cardsSchema);
 cards.createIndexes();
