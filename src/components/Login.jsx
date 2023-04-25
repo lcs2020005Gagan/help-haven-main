@@ -245,7 +245,7 @@ const response=await fetch("http://localhost:5000/api/auth/verifyotp",{
  {showOtp&&
  <div className="okOtp">
   Otp has been sent to {up.email}
-  <ReactCodeInput onChange={handleOtpChange}/>
+  {/* <ReactCodeInput onChange={handleOtpChange}/> */}
   <div style={{"display":"flex","width":"5rem","alignItems":"center","justifyContent":"center"}} onClick={handleOtp}>
     <ButtonComp title="Enter"/>
   </div>
