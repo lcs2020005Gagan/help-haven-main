@@ -61,7 +61,7 @@ bow_counts = CountVectorizer(
 )
 text=processed_data
 sentiment=data.sentiment
-X_train, X_test, y_train, y_test = train_test_split(text, sentiment, test_size = 0.2)
+X_train, X_test, y_train, y_test = train_test_split(text, sentiment, test_size = 0.0)
 
 #Creation of encoding related to train dataset
 X_train_bow = bow_counts.fit_transform(X_train)

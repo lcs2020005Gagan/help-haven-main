@@ -12,7 +12,7 @@ function NavBar(props) {
           {props.title} 
           </div>
           <div className="upper-left-icon-draw" style={{"marginLeft":"auto"}}>
-         { (props.title=="Home"||props.title==="Bookmarks")&&<Drawer/>}
+         { (props.title=="Home"||props.title==="Bookmarks"||props.title=="Explore")&&<Drawer/>}
 
           </div>
       </div>

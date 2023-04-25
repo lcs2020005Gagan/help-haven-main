@@ -47,7 +47,7 @@ model=Pipeline(steps=[("preprocessing",preprocessor),
 x=data.drop("income",axis=1)
 y=data["income"]
 y=y.apply(compr)
-x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.4)
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.001)
 model.fit(x_train,y_train)
 model.score(x_test,y_test)
 

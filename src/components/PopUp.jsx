@@ -111,7 +111,7 @@ export default function BasicModal(props) {
         <>
             <div className="pushlish-request" onClick={handleOpen}>
 
-                <ButtonComp title="Publish Request" />
+                <ButtonComp title="Request donation" />
 
             </div>
             <Modal

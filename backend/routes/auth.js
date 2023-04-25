@@ -181,10 +181,10 @@ router.post('/donate', fetchuser, [
             _id:card_id
           },{
             $inc:{
-              amountDonated:amountGiven
+              donations:1
             },
             $inc:{
-              donations:1
+              amountDonated:amountGiven
             }
           })
           const user=await User.find({_id:req.id});
