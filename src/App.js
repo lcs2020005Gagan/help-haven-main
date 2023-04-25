@@ -78,12 +78,14 @@ function App() {
       
     return (
         <BrowserRouter>
-         {window.location.pathname==="/home"&&<div className="App">
+         {/* {window.location.pathname==="/home"&&<div className="App">
 
        <Home/>
-        </div>}
-            
-        {window.location.pathname!=="/home"&&<div className="HomePageContainer">
+        </div>} */}
+            <Routes>
+            <Route exact path="/home" element=<Home /> />
+            <Route exact path="*" element= {<div className="HomePageContainer">
+
             <div className="LeftHomePageContainer">
                 <LeftNavBar />
             </div>
@@ -111,7 +113,8 @@ function App() {
     </div> */}
             </div>
 
-        </div>}
+        </div>} />
+        </Routes>
            </BrowserRouter>
 
     );
