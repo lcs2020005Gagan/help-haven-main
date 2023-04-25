@@ -132,7 +132,7 @@ function HomePageCard(props) {
           </VisibilitySensor>
       </div> */}
             <div className="ok">
-            {`${Math.min(100,Math.round(props.element.donations/props.element.amountRequired*100))}%`}
+            {props.element.donations!==undefined?`${Math.min(100,Math.round(props.element.donations/props.element.amountRequired*100))}%`:"0%"}
             </div>
   
 
