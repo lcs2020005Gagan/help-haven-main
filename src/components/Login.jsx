@@ -6,7 +6,7 @@ import Modal from '@mui/material/Modal';
 import {FaShareAlt} from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom';
 import {FiLogOut} from 'react-icons/fi';
-import ReactCodeInput from 'react-verification-code-input';
+// import ReactCodeInput from 'react-verification-code-input';
 
 import {
     MDBContainer,
