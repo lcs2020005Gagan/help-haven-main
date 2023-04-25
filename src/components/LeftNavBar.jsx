@@ -7,10 +7,12 @@ import {FaHands} from 'react-icons/fa'
 import {BsTwitter} from 'react-icons/bs'
 import {AiOutlineHome,AiTwotoneHome} from 'react-icons/ai'
 import {FiLogOut} from 'react-icons/fi'
+import {BsInfoCircle} from 'react-icons/bs'
 import {MdOutlineExplore} from 'react-icons/md'
 import ButtonComp from './ButtonComp'
 import PopUp from './PopUp'
 import PopUpDetails from './PopUpDetails'
+import LeftPersistentDrawer from './LeftPersistentDrawer'
 
 import { Link, useParams ,useLocation, useNavigate} from 'react-router-dom';
 import PopUpPostRequest from './PopUpPostRequest'
@@ -59,6 +61,7 @@ function LeftNavBar() {
 
   return (
     <div className='LeftNavBar'>
+      {/* <LeftPersistentDrawer/> */}
       {user&&user.defaultValuesAdded===false&&<PopUpDetails
        defaultState="true"/>}
         <div className="HelpHavenLogo">
@@ -85,8 +88,8 @@ function LeftNavBar() {
             <Link to="/explore/foru">
             <li className={`LeftNavBarLi ${func(location.pathname)==="/explore"?"LeftNavActive":""}`}>{func(location.pathname)!=="/explore"&&<MdOutlineExplore/>} {func(location.pathname)==="/explore"&&<MdExplore/>} Explore</li>
             </Link>
-            {localStorage.getItem("token")&&<Link to="/message">
-         <li className={`LeftNavBarLi ${func(location.pathname)==="/message"?"LeftNavActive":""}`}>{func(location.pathname)!=="/message"&&<MdOutlineMessage/>} {func(location.pathname)==="/message"&&<MdMessage/>} Messages</li>
+            {localStorage.getItem("token")&&<Link to="/chat">
+         <li className={`LeftNavBarLi ${func(location.pathname)==="/chat"?"LeftNavActive":""}`}>{func(location.pathname)!=="/chat"&&<MdOutlineMessage/>} {func(location.pathname)==="/chat"&&<MdMessage/>} Messages</li>
             </Link>}
             {/* <li className='LeftNavBarLi'><FiMessageSquare/> Messages</li> */}
             {localStorage.getItem("token")&& <Link to="/bookmarks">
@@ -100,6 +103,12 @@ function LeftNavBar() {
             <li className={`LeftNavBarLi`}><FiLogOut/> LogIn</li>
               </a>:<li className={`LeftNavBarLi`} onClick={handleLogOut}><FiLogOut/> Logout</li>
 }
+            </div>
+            <div >
+            <a href="/home">
+            <li className={`LeftNavBarLi`}><BsInfoCircle/> About</li>
+              </a>
+
             </div>
             {localStorage.getItem("token")&&<PopUp/>}
         </ul>

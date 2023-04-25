@@ -32,6 +32,7 @@ function Comments(props)  {
           });
     
           const json=await response.json();
+          console.log(json)
          setUser(json[0])    
         }
             getUserProfile();

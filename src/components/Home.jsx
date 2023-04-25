@@ -72,12 +72,12 @@ const Home = () => {
             </div>
           </div>
         </Slide>
-        <div className="landing-blocks">
+        {/* <div className="landing-blocks">
           <LandingCards />
         </div>
         <div className="demographics">
           <h2>Our Demographics</h2>
-        </div>
+        </div> */}
 
         <Slide direction="right">
           <div className="doughnut-graph">

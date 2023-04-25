@@ -1,36 +1,34 @@
-import React from 'react';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Doughnut } from 'react-chartjs-2';
+import React from "react";
+import { Chart } from "react-google-charts";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+export const data = [
+  ["Domain", "Donations in Rs."],
+  ["Health", 11000],
+  ["Animals", 21000],
+  ["Shelter", 9000],
+  ["Clothes", 2000],
+  ["Education", 30000],
+];
 
-export const data = {
-  labels: ['Health', 'Shelter', 'Education', 'Food', 'Animals', 'Clothes'],
-  datasets: [
-    {
-      label: 'Amounts Recieved',
-      data: [12, 8, 3, 9, 2, 5],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.7)',
-        'rgba(54, 162, 235, 0.7)',
-        'rgba(255, 206, 86, 0.7)',
-        'rgba(109, 191, 192, 0.7)',
-        'rgba(153, 102, 255, 0.7)',
-        'rgba(255, 99, 64, 0.7)',
-      ],
-      borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 99, 64, 1)',
-      ],
-      borderWidth: 3,
-    },
-  ],
+export const options = {
+  title: "Donations Distribution",
+  is3D: true,
+  backgroundColor: 'black',
+  legendTextStyle: { color: '#FFF' },
+  titleTextStyle: { color: '#FFF' },
+  hAxis: {
+    color: '#FFF',
+  }
 };
 
 export default function App() {
-  return <Doughnut data={data} />;
+  return (
+    <Chart
+      chartType="PieChart"
+      data={data}
+      options={options}
+      width={"100%"}
+      height={"400px"}
+    />
+  );
 }

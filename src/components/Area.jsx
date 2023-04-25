@@ -1,92 +1,45 @@
-import React from "react";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Filler,
-  Legend,
-} from "chart.js";
-import { Line } from "react-chartjs-2";
+import { Chart } from "react-google-charts";
 
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Filler,
-  Legend
-);
-
-export const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: "top",
-    },
-    title: {
-      display: true,
-      text: "Monthly Donations",
-    }
-  },
-  scales: {
-    y: {
-        ticks: {
-            font: {
-                size: 14,
-            }
-        }
-    },
-    x: {
-        ticks: {
-            font: {
-                size: 14,
-            }
-        }
-    }
-}
-,
-elements:{
-    point:{
-        radius:7
-    }
-}
-};
-
-const labels = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
+export const data = [
+  ["Year", "Amount in Rs"],
+  ["2018", 3000],
+  ["2019", 6000],
+  ["2020", 7770],
+  ["2021", 13000],
+  ["2022", 22000],
 ];
 
-export const data = {
-  labels,
-  datasets: [
-    {
-      fill: true,
-      label: "Amount in Rs",
-      data: labels.map(()=>Math.random()*20000),
-      borderColor: "rgb(180, 162, 235)",
-      backgroundColor: "rgba(10, 162, 235, 0.3)",
-    },
-  ],
+export const options = {
+  title: "Company Performance",
+  hAxis: { title: "Year", titleTextStyle: { color: "#fff" } },
+  vAxis: { minValue: 0 },
+  chartArea: { width: "50%", height: "70%" },
+  backgroundColor:"black",
+  legendTextStyle: { color: '#FFF' },
+  titleTextStyle: { color: '#FFF' },
+  hAxis: {
+    color: '#FFF',
+  },
+  vaxis:{
+    color:'white',
+  },
+  colors:["yellow"],
+  hAxis: {
+    textStyle:{color: '#FFF'}
+  },
+  vAxis: {
+    textStyle:{color: '#FFF'}
+  }
 };
 
 export default function App() {
-  return <Line options={options} data={data} />;
+  return (
+    <Chart
+      chartType="AreaChart"
+      width="100%"
+      height="400px"
+      data={data}
+      options={options}
+    />
+  );
 }

@@ -1,68 +1,16 @@
-// import React ,{useState}from 'react';
+import React from 'react'
+import DontWantToChat from './DontWantToChat'
+import Button from '@mui/material/Button';
+import ButtonComp from './ButtonComp';
+import io from "socket.io-client"; 
+import RightNavBarForChat from './RightNavBarForChat'
+import { useEffect, useState, useRef } from 'react';
 
-// // Integrate the SDK
-// import { ZIMKitManager, Common } from '@zegocloud/zimkit-react';
-// import '@zegocloud/zimkit-react/index.css';
-
-
-
-// // The following uses the App instance as an example.
-// export default class App extends React.Component {
-  
-//     constructor() {
- 
-//         super();
-//         this.state = {
-//             appConfig: {
-//                 appID: 1346763769,        // The AppID you get from the ZEGOCLOUD admin console.
-//                 serverSecret: 'f88a4f0a3fca742142d1b2889c993f49' // The serverSecret you get from ZEGOCLOUD Admin Console.
-//             },
-//             // The userID and userName is a strings of 1 to 32 characters.
-//             // Only digits, letters, and the following special characters are supported: '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', '=', '-', '`', ';', '’', ',', '.', '<', '>', '/', '\'
-//             userInfo: {
-//                 // Your ID as a user.
-//                 userID: 'Gagan7',
-//                 // Your name as a user.
-//                 userName: 'Gagan',
-//                 // The image you set as a user avatar must be network images. e.g., https://storage.zego.im/IMKit/avatar/avatar-0.png
-//                 userAvatarUrl: 'https://storage.zego.im/IMKit/avatar/avatar-0.png'
-//             },
-//         }
-//     }
-//     async componentDidMount() {
-        
-//         const zimKit = new ZIMKitManager();
-//         const token = zimKit.generateKitTokenForTest(this.state.appConfig.appID, this.state.appConfig.serverSecret, this.state.userInfo.userID);
-//         await zimKit.init(this.state.appConfig.appID);
-//         await zimKit.connectUser(this.state.userInfo, token);
-//     }
-//     render() {
-
-//         return (
-//             <Common></Common> 
-//         );
-//     }
-// }
-
-import React, { useState, useEffect } from 'react';
-import { ZIMKitManager, Common } from '@zegocloud/zimkit-react';
-import '@zegocloud/zimkit-react/index.css';
-
-const App = () => {
-  var rand=0
+const Chat = () => {
   const host="http://localhost:5000"
   const [user,setUser]=useState(null)
-
-  const [appConfig] = useState({
-    appID: 1346763769,
-    serverSecret: 'f88a4f0a3fca742142d1b2889c993f49'
-  });
-  const [userInfo,setUserInfo] = useState({
-    userID: Math.floor(Math.random()*1000000),
-    userName: null,
-    userAvatarUrl: 'https://storage.zego.im/IMKit/avatar/avatar-0.png'
-  });
   useEffect(()=>{
+      
     const getUserProfile=async ()=>{
         const response=await fetch(`${host}/api/auth/getuser`,{
             method: 'GET',
@@ -73,38 +21,131 @@ const App = () => {
           });
     
           const json=await response.json();
-          console.log("chat",json);
-        //  setUser(json[0])    
-        setUserInfo({
-          userName:json[0].name,
-          userAvatarUrl:json[0].profileImg
-        })
-        console.log(userInfo)
+         //  console.log("side",json);
+         setUser(json[0])    
         }
             getUserProfile();
-            console.log(user)  
-  },[])
 
+  },[])
+  // const currentUserName = user.name;
+  // const currentUserId= user.id;
+  const [rname,setRname]=useState("Search user to begin chatting")
+
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState(''); 
+  const socket = io.connect('http://localhost:5000');
+  const [receiver,setReceiver]=useState(user?._id);
+  
+  socket.on("connect", () => {
+    console.log("Connected to server");
+  });
+
+  socket.on("receivedata",(chat)=>{
+    console.log("hi");
+   
+   console.log(chat.messages)
+    var mes = chat.messages.map(function(num) {
+      
+      const mess= {sender:num.sender,text:num.text}
+      return  mess
+      });
+      mes=mes.filter(item => {
+        // Modify this condition to filter items based on your requirement
+        // For example, to filter items whose name contains a specific string
+        return !(item.sender===undefined)
+      });
+  setMessages(mes);
+   })
+  socket.on("getReceiverName",(r)=>{
+    console.log(r)
+    if(r.sender===null)
+    setRname("SEARCH FOR SOMEONE TO CHAT WITH")
+    else
+    setRname(r)})
+
+    socket.on("message",(s,sname,receivers,newMessage)=>{
+      // if(receiver==receivers||sender==currentUser)
+     if(s==user?._id)
+     {
+      {  const p={text:newMessage,  sender: sname};
+      console.log("yessssss")
+      setMessages([...messages,p]);
+      console.log(messages);
+      }
+    }
+     })
+  
+  useEffect(() => {
+ //joining
+    socket.emit('join',user?._id, receiver);
+ socket.emit("getReceiverName",receiver)
+ 
+    console.log(receiver," changed backend ie receiver changed")
+
+ //receiving message
+ 
+   
+  },[receiver]);
+
+     
  
 
-  useEffect(() => {
-    const initZIMKit = async () => {
-      const zimKit = new ZIMKitManager();
-      const token = zimKit.generateKitTokenForTest(
-        appConfig.appID,
-        appConfig.serverSecret,
-        userInfo.userID
-      );
-      await zimKit.init(appConfig.appID);
-      await zimKit.connectUser(userInfo, token);
-    };
+  
 
-    initZIMKit();
-  }, [appConfig.appID, appConfig.serverSecret, userInfo.userID]);
+  const sendMessage = (e) => {
+   // console.log("clicked");
+   //console.log('user is', user?.name)
+    //const s={text:newMessage,  sender:user?.name};
+    //console.log(e);
+   
+   // setMessages([...messages, s]);
+    console.log(messages);
+    // console.log(newMessage); 
+    e.preventDefault();
+    socket.emit('message',  user?._id, user?.name,  receiver, newMessage);
+    setNewMessage(""); 
+    
+    //  if (newMessage.trim() !== '') {
+    //   socket.emit('message', { chatId, sender: currentUser._id, text: newMessage }); 
+    
+  };
+  const whiteStyles = {
+    color: 'white'
+  }
 
+  return (
 
+    <div className='RightAndLeft2'>
+<div >
+  <div>
+      <h2 className="chat-heading"> {rname} </h2>
+     <div className='chat-window'>
+        {messages.map((message) => (
+            
+          <div  style={whiteStyles} className={`ChatList ${user.name===message.sender?"message-right":"message-left"} `}>
+            <font size="4"
+            face="arial"
+            color="#ffffff">
+              <div className={`MessageText ${user.name===message.sender?"message-text-right":"message-text-left"} `}>
 
-  return <Common />;
+            {message.text}
+              </div>
+            </font>
+          </div>
+
+        ))}
+      </div>
+      
+        <input type="text"  className="chat-textarea" 
+      placeholder="Type your message here" value={newMessage} onChange={(e) => setNewMessage(e.target.value)} />
+      
+        <button className="publish-button1" onClick={sendMessage}><ButtonComp title="Send"/></button>            
+      </div>
+     
+    </div>
+    <RightNavBarForChat receiver={receiver} setReceiver={setReceiver}/>
+  </div>
+  );
 };
 
-export default App;
+export default Chat;

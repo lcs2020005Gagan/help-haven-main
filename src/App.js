@@ -92,7 +92,7 @@ function App() {
                 <Routes>
                 <Route exact path="/" element=<HomePage /> />
                 <Route exact path="/friend" element=<Friend /> />
-                <Route exact path="/message" element=<Chat /> />
+                <Route exact path="/chat" element=<Chat /> />
                 <Route exact path="/tag/:tagId" element=<Tag /> />
                 <Route exact path="/metamask" element=<MetaMask /> />
                 <Route exact path="/explore/foru" element=<Explore toRender="ForYou" /> />

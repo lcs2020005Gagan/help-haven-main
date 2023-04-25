@@ -8,11 +8,40 @@ import axios from 'axios';
 function CommentCard(props) {
      
 
-const [likes, setlikes] = useState(1) 
+const [likes, setlikes] = useState(0) 
 const [reveal, setReveal] = useState(true) 
 const [liked, setliked] = useState("") 
+
+function getOrdinalSuffix(date) {
+  const suffixes = ['th', 'st', 'nd', 'rd'];
+  const lastDigit = date % 10;
+  return (date > 10 && date < 20) ? suffixes[0] : suffixes[lastDigit] || suffixes[0];
+}
+
+function getMonthName(month) {
+  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  return months[month];
+}
+
+function formatTime(date) {
+  const hour = date.getHours().toString().padStart(2, '0');
+  const minute = date.getMinutes().toString().padStart(2, '0');
+  const second = date.getSeconds().toString().padStart(2, '0');
+  return `${hour}:${minute}:${second}`;
+}
+const getProperDate=(inputDate)=>{
+  const date = new Date(inputDate);
+  const formattedDate = `${date.getDate()}${getOrdinalSuffix(date.getDate())} ${getMonthName(date.getMonth())}, ${date.getFullYear()}`;
+  
+  return formattedDate;
+}
+
+
+
+
 useEffect(() => {
     // console.log("hello")
+    
       setReveal(true)
        axios.post('http://localhost:8000/api/post-data', {
          data: props.element.comment
@@ -76,7 +105,7 @@ useEffect(() => {
         </div>
         <div className="CommentCardContent">
             <div className="CommentCardHeader">
-                    <Link to={`/profile/${props.element.author._id}`}> <h2>@{props.element.author.name}</h2></Link> 2 years ago
+                    <Link to={`/profile/${props.element.author._id}`}> <h2>@{props.element.author.name}</h2></Link> {getProperDate(props.element.date)}
             </div>
             <div className="CommentCardMiddle">
                {props.element.comment}
