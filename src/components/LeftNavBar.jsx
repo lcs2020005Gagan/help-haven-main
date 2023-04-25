@@ -99,15 +99,15 @@ function LeftNavBar() {
             <li className={`LeftNavBarLi ${func(location.pathname)==="/profile"?"LeftNavActive":""}`}>{func(location.pathname)!=="/profile"&&<BsPerson/>} {func(location.pathname)==="/profile"&&<BsFillPersonFill/>} Profile</li>
             </Link>}
             <div onClick={handleLogOut}>
-              {!localStorage.getItem("token")?<a href="/home">
+              {!localStorage.getItem("token")?<Link to="/home">
             <li className={`LeftNavBarLi`}><FiLogOut/> LogIn</li>
-              </a>:<li className={`LeftNavBarLi`} onClick={handleLogOut}><FiLogOut/> Logout</li>
+              </Link>:<li className={`LeftNavBarLi`} onClick={handleLogOut}><FiLogOut/> Logout</li>
 }
             </div>
             <div >
-            <a href="/home">
+            <Link to="/home">
             <li className={`LeftNavBarLi`}><BsInfoCircle/> About</li>
-              </a>
+              </Link>
 
             </div>
             {localStorage.getItem("token")&&<PopUp/>}
