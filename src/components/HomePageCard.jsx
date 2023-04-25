@@ -6,7 +6,7 @@ import {FiMessageSquare} from 'react-icons/fi'
 import {AiOutlineShareAlt,AiOutlineEye} from 'react-icons/ai'
 import Badge from '@mui/material/Badge';
 import Tooltip from '@mui/material/Tooltip';
-import { CircularProgressbar,buildStyles } from 'react-circular-progressbar';
+// import { CircularProgressbar,buildStyles } from 'react-circular-progressbar';
 import VisibilitySensor from "react-visibility-sensor";
 import { Link, useNavigate } from 'react-router-dom';
 import Chip from './Chip'
@@ -114,7 +114,7 @@ function HomePageCard(props) {
 
     </div>    
     <div className='bottom-container'>
-      <div className="percentage" style={{"display":"flex","justifyContent":"center","alignItems":"center","textAlign":"center"}}>
+      {/* <div className="percentage" style={{"display":"flex","justifyContent":"center","alignItems":"center","textAlign":"center"}}>
       <VisibilitySensor> 
             {({ isVisible }) => {
               const percentage = isVisible ? 90 : 0;
@@ -130,8 +130,8 @@ function HomePageCard(props) {
               );
             }}
           </VisibilitySensor>
-      </div>
-            <div className="ok" style={{"marginLeft":"-11.5rem","color":"white","fontSize":"bold"}}>
+      </div> */}
+            <div className="ok">
             {`${Math.min(100,Math.round(props.element.donations/props.element.amountRequired*100))}%`}
             </div>
   
