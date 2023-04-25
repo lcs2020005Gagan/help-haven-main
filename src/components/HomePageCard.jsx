@@ -7,9 +7,7 @@ import {AiOutlineShareAlt,AiOutlineEye} from 'react-icons/ai'
 import Badge from '@mui/material/Badge';
 import Tooltip from '@mui/material/Tooltip';
 import { CircularProgressbar,buildStyles } from 'react-circular-progressbar';
-import "react-circular-progressbar/dist/styles.css";
 import VisibilitySensor from "react-visibility-sensor";
-import 'react-circular-progressbar/dist/styles.css';
 import { Link, useNavigate } from 'react-router-dom';
 import Chip from './Chip'
 import Chip2 from './Chip2';
@@ -116,8 +114,8 @@ function HomePageCard(props) {
 
     </div>    
     <div className='bottom-container'>
-      <div className="percentage">
-      <VisibilitySensor>
+      <div className="percentage" style={{"display":"flex","justifyContent":"center","alignItems":"center","textAlign":"center"}}>
+      <VisibilitySensor> 
             {({ isVisible }) => {
               const percentage = isVisible ? 90 : 0;
               return (
@@ -128,13 +126,14 @@ function HomePageCard(props) {
                   pathColor:'aqua',
                   backgroundColor: '#b1f9b7',
                 })}
-              
-              value={Math.min(100,Math.round(props.element.donations/props.element.amountRequired*100))} text={`${Math.min(100,Math.round(props.element.donations/props.element.amountRequired*100))}%`} />
+              value={Math.min(100,Math.round(props.element.donations/props.element.amountRequired*100))}  />
               );
             }}
           </VisibilitySensor>
-     
       </div>
+            <div className="ok" style={{"marginLeft":"-11.5rem","color":"white","fontSize":"bold"}}>
+            {`${Math.min(100,Math.round(props.element.donations/props.element.amountRequired*100))}%`}
+            </div>
   
 
                 <div className="icons">
