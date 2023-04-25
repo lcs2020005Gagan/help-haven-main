@@ -7,7 +7,7 @@ import {AiOutlineShareAlt,AiOutlineEye} from 'react-icons/ai'
 import Badge from '@mui/material/Badge';
 import Tooltip from '@mui/material/Tooltip';
 // import { CircularProgressbar,buildStyles } from 'react-circular-progressbar';
-import VisibilitySensor from "react-visibility-sensor";
+// import VisibilitySensor from "react-visibility-sensor";
 import { Link, useNavigate } from 'react-router-dom';
 import Chip from './Chip'
 import Chip2 from './Chip2';
