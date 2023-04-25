@@ -16,27 +16,31 @@ function HomePage() {
   const [articles,setArticles]=useState([])
   useEffect(() => {
 
-    const func=async()=>{
-      const response=await fetch(`${host}/api/upload/getallcards`,{
-          method: 'GET',
-        });
-        const json=await response.json();
-        setArticles(json);         
+    const getUserProfile=async ()=>{
+      const response=await fetch(`${host}/api/auth/getuser2`,{
+        method: 'GET',
+        headers: {
+          'auth-token': localStorage.getItem('token'),
+          'Content-Type':'application/json'
+        },
+      });
+      
+      const json=await response.json();
+      setUser((json[0]))
+      const response2=await fetch(`${host}/api/upload/getallcards`,{
+        method: 'GET',
+      });
+      const json2=await response2.json();
+      json2.sort((a, b) => (a.amountRequired - a.donations) - (b.amountRequired - b.donations));
+      if(json[0].greaterThan50K){
+        json2.reverse()
+        
       }
-      const getUserProfile=async ()=>{
-        const response=await fetch(`${host}/api/auth/getuser2`,{
-            method: 'GET',
-            headers: {
-              'auth-token': localStorage.getItem('token'),
-              'Content-Type':'application/json'
-            },
-          });
-    
-          const json=await response.json();
-         setUser((json[0]))
-        }
+      
+      console.log("homepage",json2,json)
+      setArticles(json2);         
+    }
         getUserProfile();
-      func();
   }, [])
 
 

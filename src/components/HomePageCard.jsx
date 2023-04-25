@@ -129,7 +129,7 @@ function HomePageCard(props) {
                   backgroundColor: '#b1f9b7',
                 })}
               
-              value={Math.min(100,Math.round(props.element.amountDonated/props.element.amountRequired*100))} text={`${Math.min(100,Math.round(props.element.amountDonated/props.element.amountRequired*100))}%`} />
+              value={Math.min(100,Math.round(props.element.donations/props.element.amountRequired*100))} text={`${Math.min(100,Math.round(props.element.donations/props.element.amountRequired*100))}%`} />
               );
             }}
           </VisibilitySensor>

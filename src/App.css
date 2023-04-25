@@ -16,7 +16,7 @@
   max-width: 100vw;
   max-height: 100vh;
   display: grid;
-  grid-template-columns: 1.5fr 5fr;
+  grid-template-columns: 1fr 5fr;
   background-color: black;
 }
 .HelpHavenLogo{
@@ -28,6 +28,7 @@
 }
 .LeftHomePageContainer{
 height: 100vh;
+background-color: #151515;
 /* border-right: 1px solid grey; */
 }
 .CenterHomePageContainer{

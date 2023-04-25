@@ -71,7 +71,7 @@ function Story() {
                     <ButtonComp className="donate-btn" title={"Donate Crypto"} />
                 </Link>
                 <div className="donation-count">
-                    <span>Amount Donated : </span>₹ {Math.round(card?.amountDonated)} 
+                    <span>Amount Donated : </span>₹ {Math.round(card?.donations)} 
                     <br />
                     <span>Donation Goal : </span>₹ {card?.amountRequired}
                 </div>
